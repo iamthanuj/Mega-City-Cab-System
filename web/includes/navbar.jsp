@@ -8,7 +8,7 @@
 
 <!DOCTYPE html>
 
-<nav class="navbar navbar-expand-lg  shadow-sm" style="background-color: var(--mainColor)">
+<nav class="navbar navbar-expand-lg fixed-top  shadow-sm" style="background-color: var(--mainColor)">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="#">
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto me-4">
                 <li class="nav-item">
-                   <a class="nav-link text-dark" href="#">Home</a>
+                   <a class="nav-link text-dark" href="index.jsp">Home</a>
                 </li>
                 <li class="nav-item">
                    <a class="nav-link text-dark" href="#">Services</a>
@@ -40,7 +40,7 @@
             <!-- Right Section -->
             <div class="d-flex align-items-center">
                 <a href="#" class="btn btn-dark me-2">Book a ride</a>
-                <a href="#" class="btn btn-outline-dark">Sign In</a>
+                <a href="login.jsp" class="btn btn-outline-dark">Sign In</a>
             </div>
         </div>
     </div>

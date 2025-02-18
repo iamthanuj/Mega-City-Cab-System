@@ -4,11 +4,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
 -->
 <html>
-    <%@include file="includes/globalStyles.jsp" %>
+    <head>
+        <%@include file="includes/globalStyles.jsp" %>
+    </head>
     <body>
         <%@include file="includes/navbar.jsp" %>
         <section>
-            <div id="carouselExampleIndicators" class="carousel slide">
+            <div id="carouselExampleIndicators" class="carousel slide carousel-fade">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -16,13 +18,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="..." class="d-block w-100" alt="...">
+                        <img src="assets/images/home3.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p>
+                        </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="..." class="d-block w-100" alt="...">
+                        <img src="assets/images/home2.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p>
+                        </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="..." class="d-block w-100" alt="...">
+                        <img src="assets/images/home1.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p>
+                        </div>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
