@@ -39,8 +39,8 @@
 
             <!-- Right Section -->
             <div class="d-flex align-items-center">
-                <a href="#" class="btn btn-dark me-2">Book a ride</a>
-                <a href="login.jsp" class="btn btn-outline-dark">Sign In</a>
+                <a href="#" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
+                <a href="login.jsp" class="btn btn-dark me-2 custom-btn-clr">Sign In</a>
             </div>
         </div>
     </div>

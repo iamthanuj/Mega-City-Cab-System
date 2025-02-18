@@ -7,6 +7,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Thanuja Fernando
 */
 
+*{
+    font-family: 'Arial', sans-serif;
+}
+
 :root {
     --mainColor: #A0FF70;
     --secondaryColor: #E8FFDC;
@@ -15,7 +19,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 .login-page {
-    background-color: #000D2A;
+    position: relative;
+    background: url('../images/home3.jpg') no-repeat center center/cover;
     color: #E8FFDC;
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -23,9 +28,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     align-items: center;
     height: 100vh;
     width: 100%;
+    overflow: hidden;
 }
 
+.login-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 13, 42, 0.7); /* Dark blue overlay with 70% opacity */
+}
+
+/* Login Container */
 .login-container {
+    position: relative;
     background: rgba(255, 255, 255, 0.1);
     padding: 40px;
     border-radius: 10px;
@@ -34,20 +52,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     max-width: 400px;
     width: 100%;
     text-align: center;
+    z-index: 1; /* Ensure login box is above overlay */
 }
+
 .login-container h2 {
     margin-bottom: 20px;
     color: #A0FF70;
 }
+
 .form-control {
     background: transparent;
     border: 1px solid #A0FF70;
     color: #E8FFDC;
 }
+
 .form-control::placeholder {
     color: #E8FFDC;
     opacity: 0.7;
 }
+
 .btn-custom {
     background-color: #A0FF70;
     color: #000D2A;
@@ -58,6 +81,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     transition: 0.3s;
     width: 100%;
 }
+
 .btn-custom:hover {
     background-color: #8FE560;
+}
+
+
+.custom-btn-clr{
+    background-color: var(--mainDarkblue)!important;
 }
