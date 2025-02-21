@@ -27,7 +27,7 @@
             </form>
             <div class="mt-3">
                 <p>Don't have an account ?</p>
-                <p><a href="register.jsp">Register Here</a></p>
+                <p><a class="text-white" href="register.jsp">Register Here</a></p>
             </div>
         </div>
     </body>
