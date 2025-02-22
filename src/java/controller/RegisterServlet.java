@@ -40,20 +40,19 @@ public class RegisterServlet extends HttpServlet {
 
         try {
             if (userDAO.checkUserExists(email)) {
-                request.setAttribute("Warning", "Email already registered!");
+                request.setAttribute("errorMessage", "Email already registered!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 if (userDAO.registerUser(newUser)) {
-                    request.setAttribute("Message", "Registration successful! Please log in.");
+                    request.setAttribute("successMessage", "Registration successful! Please log in.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("message","Registration failed. Try again.");
+                    request.setAttribute("errorMessage","Registration failed. Try again.");
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            
         }
 
     }

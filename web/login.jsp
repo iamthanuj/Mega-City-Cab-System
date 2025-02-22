@@ -15,6 +15,9 @@
     <body class="login-page">
         <%@include file="includes/navbar.jsp" %>
         <div class="login-container">
+            <% if (request.getAttribute("successMessage") != null) {%>
+            <p class="text-success-emphasis"><%= request.getAttribute("successMessage")%></p>
+            <% }%>
             <h2>Login</h2>
             <form>
                 <div class="mb-3">

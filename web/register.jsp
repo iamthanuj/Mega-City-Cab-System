@@ -39,8 +39,8 @@
                 <p>Already have an account ?</p>
                 <p><a class="text-white" href="login.jsp">Login Here</a></p>
             </div>
-            <% if (request.getAttribute("message") != null) {%>
-            <p class="text-danger"><%= request.getAttribute("message")%></p>
+            <% if (request.getAttribute("errorMessage") != null) {%>
+            <p class="text-danger"><%= request.getAttribute("errorMessage")%></p>
             <% }%>
         </div>
     </body>
