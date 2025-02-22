@@ -16,28 +16,32 @@
         <%@include file="includes/navbar.jsp" %>
         <div class="login-container">
             <h2>Register</h2>
-            <form>
+            <form action="register" method="post">
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Full Name" required>
-                </div>
-                <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="NIC" required>
+                    <input type="text" class="form-control" name="name"  placeholder="Full Name" required>
                 </div>
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Email" required>
+                    <input type="text" class="form-control" name="nic"  placeholder="NIC" required>
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Phone" required>
+                    <input type="email" class="form-control" name="email"  placeholder="Email" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="text" class="form-control" name="phone"  placeholder="Phone" required>
                 </div>
-                <button type="submit" class="btn btn-custom">Login</button>
-                <div class="mt-3">
-                    <p>Already have an account ?</p>
-                    <p><a class="text-white" href="login.jsp">Login Here</a></p>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
                 </div>
+                <button type="submit" class="btn btn-custom">Register</button>
+
             </form>
+            <div class="mt-3">
+                <p>Already have an account ?</p>
+                <p><a class="text-white" href="login.jsp">Login Here</a></p>
+            </div>
+            <% if (request.getAttribute("message") != null) {%>
+            <p class="text-danger"><%= request.getAttribute("message")%></p>
+            <% }%>
         </div>
     </body>
 </html>
