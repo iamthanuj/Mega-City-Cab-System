@@ -44,7 +44,10 @@
                     Object user = session.getAttribute("user");
                 %>
                 <a href="#" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
-                <a href="login.jsp" class="btn btn-dark me-2 custom-btn-clr">Sign In</a>
+
+                <%
+                    if (user != null) { // User is logged in
+                %>
 
                 <!-- Avatar Dropdown -->
                 <div class="nav-item dropdown">
@@ -54,9 +57,20 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">View Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>
                 </div>
+
+                <%
+                } else { // User is not logged in
+                %>
+
+                <a href="login.jsp" class="btn btn-dark me-2 custom-btn-clr">Sign In</a>
+
+                <%
+                    }
+                %>
+
             </div>
         </div>
     </div>
