@@ -15,16 +15,16 @@
     <body class="login-page">
         <%@include file="includes/navbar.jsp" %>
         <div class="login-container">
-            <% if (request.getAttribute("successMessage") != null) {%>
-            <p class="text-success-emphasis"><%= request.getAttribute("successMessage")%></p>
+            <% if (request.getAttribute("errorMessage") != null) {%>
+            <p class="text-success-emphasis"><%= request.getAttribute("errorMessage")%></p>
             <% }%>
             <h2>Login</h2>
-            <form>
+            <form action="login"  method="post">
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Email" required>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-custom">Login</button>
             </form>

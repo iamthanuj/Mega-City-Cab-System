@@ -4,10 +4,10 @@
  */
 package controller;
 
-import dao.UserDAO;
-import dao.impl.UserDAOImpl;
+import persistance.dao.UserDAO;
+import persistance.impl.UserDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,16 +15,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import model.User;
+import service.services.UserService;
 
 /**
  *
  * @author Thanuja Fernando
  */
-
-
 public class RegisterServlet extends HttpServlet {
 
-    private UserDAO userDAO = new UserDAOImpl();
+    private UserService userService = new UserService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,17 +38,24 @@ public class RegisterServlet extends HttpServlet {
         User newUser = new User(name, nic, email, phone, password);
 
         try {
-            if (userDAO.checkUserExists(email)) {
+//            if (userService.checkUserExists(email)) {
+//                request.setAttribute("errorMessage", "Email already registered!");
+//                request.getRequestDispatcher("register.jsp").forward(request, response);
+//            } else {
+//                if (userService.registerUser(newUser)) {
+//                    request.setAttribute("successMessage", "Registration successful! Please log in.");
+//                    request.getRequestDispatcher("login.jsp").forward(request, response);
+//                } else {
+//                    request.setAttribute("errorMessage","Registration failed. Try again.");
+//                    request.getRequestDispatcher("register.jsp").forward(request, response);
+//                }
+//            }
+            if (userService.registerUser(newUser)) {
+                request.setAttribute("successMessage", "Registration successful! Please log in.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
                 request.setAttribute("errorMessage", "Email already registered!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
-            } else {
-                if (userDAO.registerUser(newUser)) {
-                    request.setAttribute("successMessage", "Registration successful! Please log in.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("errorMessage","Registration failed. Try again.");
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Megca City">
+    <output-path>$PROJECT_DIR$/out/artifacts/Megca_City</output-path>
+    <root id="archive" name="Megca City.war" />
+  </artifact>
+</component>

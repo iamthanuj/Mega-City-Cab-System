@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dao.impl;
+package persistance.impl;
 
-import dao.UserDAO;
+import persistance.dao.UserDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -45,6 +45,34 @@ public class UserDAOImpl implements UserDAO {
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
         }
+    }
+
+    @Override
+    public User authenticateUser(String email, String password) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+                String storedPassword = rs.getString("Password");
+
+                if (storedPassword.equals(password)) {
+                    user = new User(rs.getString("FullName"), rs.getString("NIC"), rs.getString("Email"), rs.getInt("Phone"), rs.getString("Password"));
+                    user.setId(rs.getInt("UserId"));
+                    return user;
+                } else {
+                    return null;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
