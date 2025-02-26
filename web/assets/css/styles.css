@@ -16,6 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     --secondaryColor: #E8FFDC;
     --mainBlack:#000000;
     --mainDarkblue:#000D2A;
+    --fadeDarkBlue:#4b5875;
 }
 
 .login-page {
@@ -91,4 +92,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 .custom-btn-clr{
     background-color: var(--mainDarkblue)!important;
+    color:white !important;
+}
+
+.custom-btn-clr:hover{
+    background-color: var(--fadeDarkBlue)!important;
+    color:white !important;
+}
+
+.theme-btn{
+    background-color: var(--mainColor);
+    color: var(--mainDarkblue);
+}
+
+.theme-btn:hover{
+    background-color: var(--secondaryColor);
+    color: var(--mainDarkblue);
 }
