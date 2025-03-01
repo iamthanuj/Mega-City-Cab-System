@@ -4,6 +4,7 @@
     Author     : Thanuja Fernando
 --%>
 
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -41,9 +42,9 @@
             <div class="d-flex align-items-center">
                 <%
                     // Assuming 'user' session attribute indicates logged-in user
-                    Object user = session.getAttribute("user");
+                    User user = (User) session.getAttribute("user");
                 %>
-                <a href="#" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
+                <a href="booking.jsp" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
 
                 <%
                     if (user != null) { // User is logged in
@@ -56,13 +57,13 @@
                         <img src="assets/images/avatar.jpg" alt="User Avatar" class="rounded-circle" width="40" height="40">
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><p class="dropdown-item"><% out.print(user.getName()); %></p></li>
                         <li><a class="dropdown-item" href="#">View Profile</a></li>
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
                     </ul>
                 </div>
 
-                <%
-                } else { // User is not logged in
+                <%                } else { // User is not logged in
                 %>
 
                 <a href="login.jsp" class="btn btn-dark me-2 custom-btn-clr">Sign In</a>
@@ -76,24 +77,24 @@
     </div>
 </nav>
 
-                
+
 <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to log out?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary theme-btn" data-bs-dismiss="modal">Cancel</button>
-        <form action="logout" method="post">
-            <button type="submit" class="btn custom-btn-clr">Logout</button>
-        </form>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to log out?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary theme-btn" data-bs-d ismiss="modal">Cancel</button>
+                <form action="logout" method="get">
+                    <button type="submit" class="btn custom-btn-clr">Logout</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

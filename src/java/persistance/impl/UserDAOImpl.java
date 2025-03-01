@@ -31,7 +31,7 @@ public class UserDAOImpl implements UserDAO {
             pstmt.setString(5, user.getPassword());
 
             int affectedRows = pstmt.executeUpdate();
-
+            
             return affectedRows > 0;
         }
     }

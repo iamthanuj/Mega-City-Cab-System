@@ -45,10 +45,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 /* Login Container */
 .login-container {
     position: relative;
-/*    background: rgba(255, 255, 255, 0.1);*/
+    /*    background: rgba(255, 255, 255, 0.1);*/
     padding: 40px;
     border-radius: 10px;
-/*    backdrop-filter: blur(10px);*/
+    /*    backdrop-filter: blur(10px);*/
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     max-width: 400px;
     margin-top: 100px;
@@ -108,4 +108,158 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .theme-btn:hover{
     background-color: var(--secondaryColor);
     color: var(--mainDarkblue);
+}
+
+
+.booking-container {
+    position: relative;
+    background: url('../images/home3.jpg') no-repeat center center/cover;
+    color: #E8FFDC;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.booking-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 13, 42, 0.7); /* Dark blue overlay with 70% opacity */
+}
+
+.booking-card {
+    border-radius: 15px;
+    border: none;
+}
+
+.vehicle-option {
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 90px;
+    flex: 1;
+    background-color: #e9ecef;
+    transition: 0.3s;
+}
+
+.vehicle-option:hover, .selected {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.vehicle-details {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background: white;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.form-select {
+    border-radius: 10px;
+}
+
+button.btn {
+    border-radius: 10px;
+}
+
+.vehicle-option {
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 90px;
+    flex: 1;
+    background-color: #e9ecef;
+    transition: 0.3s;
+    font-weight: bold;
+    border: 2px solid transparent;
+}
+
+.vehicle-option:hover {
+    background-color: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+}
+
+/* Active Vehicle Type */
+.vehicle-option.selected {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* Vehicle Details Styling */
+.vehicle-details {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background: white;
+    transition: all 0.3s ease-in-out;
+}
+
+.vehicle-details strong {
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.vehicle-details small {
+    color: #555;
+}
+
+/* Input & Select Styling */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #A0FF70;
+    color: #000;
+}
+
+.form-control::placeholder {
+    color: #666;
+}
+
+/* Button Styling */
+button.btn {
+    border-radius: 10px;
+    background-color: #000;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button.btn:hover {
+    background-color: #333;
+}
+
+
+.receipt-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+}
+.receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.receipt-details dt {
+    font-weight: bold;
+}
+@media print {
+    .no-print {
+        display: none;
+    }
 }
