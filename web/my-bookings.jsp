@@ -55,60 +55,60 @@
                         <td><%= booking.getDatetime()%></td>
                         <td><%= booking.getAddress()%></td>
                         <td>
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= booking.getId()%>">Update</button>
-                            <form action="/deleteBooking" method="POST" style="display:inline;">
-                                <input type="hidden" name="bookingId" value="<%= booking.getId()%>">
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= booking.getBookingId()%>">Update</button>
+                            <form action="deleteBooking" method="POST" style="display:inline;">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
                             </form>
                         </td>
                     </tr>
 
                     <!-- Update Modal -->
-                <div class="modal fade" id="updateModal<%= booking.getId()%>" tabindex="-1" aria-labelledby="updateModalLabel<%= booking.getId()%>" aria-hidden="true">
+                <div class="modal fade" id="updateModal<%= booking.getBookingId()%>" tabindex="-1" aria-labelledby="updateModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel<%= booking.getId()%>">Update Booking</h5>
+                                <h5 class="modal-title" id="updateModalLabel<%= booking.getBookingId()%>">Update Booking</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="/updateBooking" method="POST">
-                                    <input type="hidden" name="bookingId" value="<%= booking.getId()%>">
+                                <form action="updateBooking" method="POST">
+                                    <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
                                     <input type="hidden" name="userId" value="<%=user.getId() %>">
 
                                     <div class="mb-3">
-                                        <label for="vehicleType<%= booking.getId()%>" class="form-label">Vehicle Type</label>
-                                        <input type="text" id="vehicleType<%= booking.getId()%>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" readonly>
+                                        <label for="vehicleType<%= booking.getBookingId() %>" class="form-label">Vehicle Type</label>
+                                        <input type="text" id="vehicleType<%= booking.getBookingId() %>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" readonly>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="distance<%= booking.getId()%>" class="form-label">Distance (km)</label>
-                                        <input type="number" id="distance<%= booking.getId()%>" name="distance" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required>
+                                        <label for="distance<%= booking.getBookingId()%>" class="form-label">Distance (km)</label>
+                                        <input type="number" id="distance<%= booking.getBookingId()%>" name="distance" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="totalCost<%= booking.getId()%>" class="form-label">Total Cost (LKR)</label>
-                                        <input type="number" id="totalCost<%= booking.getId()%>" name="totalCost" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required>
+                                        <label for="totalCost<%= booking.getBookingId()%>" class="form-label">Total Cost (LKR)</label>
+                                        <input type="number" id="totalCost<%= booking.getBookingId()%>" name="totalCost" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="startLocation<%= booking.getId()%>" class="form-label">Start Location</label>
-                                        <input type="text" id="startLocation<%= booking.getId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required>
+                                        <label for="startLocation<%= booking.getBookingId()%>" class="form-label">Start Location</label>
+                                        <input type="text" id="startLocation<%= booking.getBookingId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="endLocation<%= booking.getId()%>" class="form-label">End Location</label>
-                                        <input type="text" id="endLocation<%= booking.getId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required>
+                                        <label for="endLocation<%= booking.getBookingId()%>" class="form-label">End Location</label>
+                                        <input type="text" id="endLocation<%= booking.getBookingId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="datetime<%= booking.getId()%>" class="form-label">Date & Time</label>
-                                        <input type="datetime-local" id="datetime<%= booking.getId()%>" name="datetime" class="form-control" value="<%= booking.getDatetime().toString().substring(0, 16)%>" required>
+                                        <label for="datetime<%= booking.getBookingId()%>" class="form-label">Date & Time</label>
+                                        <input type="datetime-local" id="datetime<%= booking.getBookingId()%>" name="datetime" class="form-control" value="<%= booking.getDatetime().toString().substring(0, 16)%>" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="address<%= booking.getId()%>" class="form-label">Address</label>
-                                        <input type="text" id="address<%= booking.getId()%>" name="address" class="form-control" value="<%= booking.getAddress()%>" required>
+                                        <label for="address<%= booking.getBookingId()%>" class="form-label">Address</label>
+                                        <input type="text" id="address<%= booking.getBookingId()%>" name="address" class="form-control" value="<%= booking.getAddress()%>" required>
                                     </div>
 
                                     <button type="submit" class="btn btn-dark">Save Changes</button>

@@ -34,11 +34,11 @@ public class Booking {
         this.address = address;
     }
 
-    public int getId() {
+    public int getBookingId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setBookingId(int id) {
         this.id = id;
     }
 

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import model.User;
 import persistance.impl.BookingDAOImpl;
 import service.factory.VehicleFactory;
 import service.model.Booking;
@@ -40,7 +41,9 @@ public class UpdateBookingServlet extends HttpServlet {
         String datetimeStr = request.getParameter("datetime");
         String address = request.getParameter("address");
 
-        Integer sessionUserId = (Integer) request.getSession().getAttribute("userId");
+        User user = (User) request.getSession().getAttribute("user");
+        Integer sessionUserId = user.getId();
+
         if (sessionUserId == null || sessionUserId != userId) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthorized user ID");
             return;
@@ -50,13 +53,13 @@ public class UpdateBookingServlet extends HttpServlet {
             LocalDateTime datetime = LocalDateTime.parse(datetimeStr);
             Booking booking = new Booking(userId, VehicleFactory.getVehicle(vehicleType), distance, totalCost,
                     startLocation, endLocation, datetime, address);
-            booking.setId(bookingId);
+            booking.setBookingId(bookingId);
             boolean success = bimpl.updateBooking(booking);
 
             if (success) {
-                response.sendRedirect("/my-bookings.jsp?message=updated");
+                response.sendRedirect("my-bookings.jsp?message=updated");
             } else {
-                response.sendRedirect("/my-bookings.jsp?error=updateFailed");
+                response.sendRedirect("my-bookings.jsp?error=updateFailed");
             }
         } catch (SQLException e) {
             throw new ServletException("Database error while updating booking: " + e.getMessage(), e);

@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package persistance.impl;
 
@@ -22,9 +22,7 @@ public class BookingDAOImpl implements BookingDAO {
     @Override
     public boolean addBooking(Booking booking) throws SQLException {
         String sql = "INSERT INTO bookings (UserId, VehicleType, Distance, TotalCost, StartLocation, EndLocation, DateTime, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, booking.getUserId());
             pstmt.setString(2, booking.getVehicle().getType());
             pstmt.setDouble(3, booking.getDistance());
@@ -35,8 +33,13 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setString(8, booking.getAddress());
 
             int rowsInserted = pstmt.executeUpdate();
+            if (rowsInserted > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    booking.setBookingId(rs.getInt(1)); // Set the generated BookingId
+                }
+            }
             return rowsInserted > 0;
-
         } catch (SQLException e) {
             throw new SQLException("Failed to add booking: " + e.getMessage(), e);
         }
@@ -44,12 +47,22 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public Booking getBookingById(int bookingId) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM bookings WHERE BookingId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return createBookingFromResultSet(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new SQLException("Failed to get booking by ID: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public List<Booking> getAllBookings(int userId) throws SQLException {
-        String sql = "SELECT * FROM bookings WHERE UserId = ? ORDER BY datetime DESC";
+        String sql = "SELECT * FROM bookings WHERE UserId = ? ORDER BY DateTime DESC";
         List<Booking> bookings = new ArrayList<>();
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
@@ -58,6 +71,8 @@ public class BookingDAOImpl implements BookingDAO {
                 bookings.add(createBookingFromResultSet(rs));
             }
             return bookings;
+        } catch (SQLException e) {
+            throw new SQLException("Failed to get all bookings: " + e.getMessage(), e);
         }
     }
 
@@ -68,6 +83,8 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setInt(1, bookingId);
             int rowsDeleted = pstmt.executeUpdate();
             return rowsDeleted > 0;
+        } catch (SQLException e) {
+            throw new SQLException("Failed to delete booking: " + e.getMessage(), e);
         }
     }
 
@@ -84,35 +101,35 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setString(5, booking.getEndLocation());
             pstmt.setTimestamp(6, Timestamp.valueOf(booking.getDatetime()));
             pstmt.setString(7, booking.getAddress());
-            pstmt.setInt(8, booking.getId());
+            pstmt.setInt(8, booking.getBookingId()); // Updated to BookingId
             pstmt.setInt(9, booking.getUserId());
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new SQLException("Failed to update booking: " + e.getMessage(), e);
         }
     }
 
     @Override
     public List<Booking> getAllBookings() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    
+
     private Booking createBookingFromResultSet(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        int userId = rs.getInt("user_id");
-        String vehicleType = rs.getString("vehicle_type");
-        double distance = rs.getDouble("distance");
-        double totalCost = rs.getDouble("total_cost");
-        String startLocation = rs.getString("start_location");
-        String endLocation = rs.getString("end_location");
-        Timestamp datetime = rs.getTimestamp("datetime");
-        String address = rs.getString("address");
+        int bookingId = rs.getInt("BookingId");
+        int userId = rs.getInt("UserId");
+        String vehicleType = rs.getString("VehicleType");
+        double distance = rs.getDouble("Distance");
+        double totalCost = rs.getDouble("TotalCost");
+        String startLocation = rs.getString("StartLocation");
+        String endLocation = rs.getString("EndLocation");
+        Timestamp datetime = rs.getTimestamp("DateTime");
+        String address = rs.getString("Address");
 
         Vehicle vehicle = VehicleFactory.getVehicle(vehicleType);
-        Booking booking = new Booking(userId, vehicle, distance, totalCost, startLocation, endLocation, 
-                                     datetime.toLocalDateTime(), address);
-        booking.setId(id);
+        Booking booking = new Booking(userId, vehicle, distance, totalCost, startLocation, endLocation,
+                datetime.toLocalDateTime(), address);
+        booking.setBookingId(bookingId); // Updated to setBookingId
         return booking;
     }
-
 }

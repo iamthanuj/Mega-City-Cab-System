@@ -42,10 +42,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateBookingServlet</servlet-name>
-        <url-pattern>/UpdateBookingServlet</url-pattern>
+        <url-pattern>/updateBooking</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteBookingServlet</servlet-name>
-        <url-pattern>/DeleteBookingServlet</url-pattern>
+        <url-pattern>/deleteBooking</url-pattern>
     </servlet-mapping>
 </web-app>
