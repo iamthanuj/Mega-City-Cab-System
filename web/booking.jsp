@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="includes/globalStyles.jsp" %>
-        <title>Login Page</title>
+        <title>Booking</title>
     </head>
     <body>
         <%@include file="includes/navbar.jsp" %>
@@ -28,7 +28,7 @@
                 <div class="card booking-card p-4 shadow-lg">
                     <h5 class="fw-bold">Select a vehicle</h5>
                     <div class="d-flex flex-wrap gap-2 my-3">
-                        <div class="vehicle-option selected" data-vehicle="Flex">Flex</div>
+                        <div class="vehicle-option  selected" data-vehicle="Flex">Flex</div>
                         <div class="vehicle-option" data-vehicle="Car">Car</div>
                         <div class="vehicle-option" data-vehicle="Van">Van</div>
                     </div>
@@ -85,7 +85,7 @@
                             <input type="text" class="form-control" id="address" name="address" required>
                         </div>
                         <div class="col-12 col-md-2 d-grid">
-                            <button type="submit" class="btn btn-dark">Book Now</button>
+                            <button type="submit" class="btn theme-btn">Book Now</button>
                         </div>
                     </div>
                 </div>

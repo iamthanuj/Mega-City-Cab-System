@@ -24,16 +24,6 @@ import service.model.Vehicle;
  */
 public class BookingServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -63,10 +53,10 @@ public class BookingServlet extends HttpServlet {
         }
 
         try {
-            // Convert datetime string to LocalDateTime
+           
             LocalDateTime datetime = LocalDateTime.parse(datetimeStr);
 
-            // Use VehicleFactory to create the Vehicle object
+           
             Vehicle vehicle = VehicleFactory.getVehicle(vehicleType);
             if (vehicle == null) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid vehicle type: " + vehicleType);

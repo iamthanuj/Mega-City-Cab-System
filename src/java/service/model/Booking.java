@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
  */
 public class Booking {
 
+    private int id;
     private int userId;
     private Vehicle vehicle; // Now uses the Vehicle interface
     private double distance;
@@ -31,6 +32,14 @@ public class Booking {
         this.endLocation = endLocation;
         this.datetime = datetime;
         this.address = address;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     private double calculateTotalCost() {

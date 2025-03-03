@@ -4,6 +4,7 @@
     Author     : Thanuja Fernando
 --%>
 
+<%@page import="service.model.Booking"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,43 +22,48 @@
                     <p>Thank you for your booking!</p>
                 </div>
 
-                <%-- Retrieve booking from session --%>
-                <c:set var="booking" value="${sessionScope.latestBooking}" />
+                <% 
+                    Booking booking = (Booking) session.getAttribute("latestBooking");
 
-                <c:if test="${booking != null}">
-                    <dl class="receipt-details">
-                        <dt>User ID:</dt>
-                        <dd>${booking.userId}</dd>
+                    if (booking != null) {
+                %>
+                <dl class="receipt-details">
+                    <dt>User ID:</dt>
+                    <dd><%= booking.getUserId()%></dd>
 
-                        <dt>Vehicle:</dt>
-                        <dd>${booking.vehicle.name} (${booking.vehicle.type})</dd>
+                    <dt>Vehicle:</dt>
+                    <dd><%= booking.getVehicle().getName()%> (<%= booking.getVehicle().getType()%>)</dd>
 
-                        <dt>Distance:</dt>
-                        <dd>${booking.distance} km</dd>
+                    <dt>Distance:</dt>
+                    <dd><%= booking.getDistance()%> km</dd>
 
-                        <dt>Total Cost:</dt>
-                        <dd>LKR ${booking.totalCost}</dd>
+                    <dt>Total Cost:</dt>
+                    <dd>LKR <%= booking.getTotalCost()%></dd>
 
-                        <dt>Start Location:</dt>
-                        <dd>${booking.startLocation}</dd>
+                    <dt>Start Location:</dt>
+                    <dd><%= booking.getStartLocation()%></dd>
 
-                        <dt>End Location:</dt>
-                        <dd>${booking.endLocation}</dd>
+                    <dt>End Location:</dt>
+                    <dd><%= booking.getEndLocation()%></dd>
 
-                        <dt>Date & Time:</dt>
-                        <dd>${booking.datetime}</dd>
+                    <dt>Date & Time:</dt>
+                    <dd><%= booking.getDatetime()%></dd>
 
-                        <dt>Address:</dt>
-                        <dd>${booking.address}</dd>
-                    </dl>
+                    <dt>Address:</dt>
+                    <dd><%= booking.getAddress()%></dd>
+                </dl>
 
-                    <%-- Clear the booking from session after displaying --%>
-                    <% session.removeAttribute("latestBooking");%>
-                </c:if>
-
-                <c:if test="${booking == null}">
-                    <p class="text-danger">No booking details available.</p>
-                </c:if>
+                <%
+                    // Clear the booking from session after displaying
+                    session.removeAttribute("latestBooking");
+                %>
+                <%
+                } else {
+                %>
+                <p class="text-danger">No booking details available.</p>
+                <%
+                    }
+                %>
             </div>
 
             <div class="text-center no-print">

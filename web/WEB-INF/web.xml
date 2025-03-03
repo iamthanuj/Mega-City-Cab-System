@@ -16,6 +16,14 @@
         <servlet-name>BookingServlet</servlet-name>
         <servlet-class>controller.BookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateBookingServlet</servlet-name>
+        <servlet-class>controller.UpdateBookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBookingServlet</servlet-name>
+        <servlet-class>controller.DeleteBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateBookingServlet</servlet-name>
+        <url-pattern>/UpdateBookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookingServlet</servlet-name>
+        <url-pattern>/DeleteBookingServlet</url-pattern>
     </servlet-mapping>
 </web-app>

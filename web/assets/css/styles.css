@@ -103,11 +103,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .theme-btn{
     background-color: var(--mainColor);
     color: var(--mainDarkblue);
+    border-color: var(--mainDarkblue);
 }
 
 .theme-btn:hover{
     background-color: var(--secondaryColor);
     color: var(--mainDarkblue);
+    border-color: var(--mainDarkblue);
 }
 
 
@@ -146,17 +148,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     text-align: center;
     min-width: 90px;
     flex: 1;
-    background-color: #e9ecef;
     transition: 0.3s;
+    background-color: var(--mainColor);
 }
 
 .vehicle-option:hover, .selected {
-    background-color: #ffc107;
-    color: #fff;
+    background-color: var(--mainDarkblue);
 }
 
 .vehicle-details {
-    border: 1px solid #ddd;
+    border: 1px solid var(--mainColor);
     padding: 15px;
     border-radius: 10px;
     background: white;
@@ -188,21 +189,21 @@ button.btn {
 }
 
 .vehicle-option:hover {
-    background-color: #ffc107;
+    background-color: var(--fadeDarkBlue) ;
     color: #fff;
-    border-color: #ffc107;
+    border-color:var(--fadeDarkBlue) ;
 }
 
 /* Active Vehicle Type */
 .vehicle-option.selected {
-    background-color: #000;
+    background-color: var(--mainDarkblue);
     color: #fff;
-    border-color: #000;
+    border-color: var(--mainDarkblue) ;;
 }
 
 /* Vehicle Details Styling */
 .vehicle-details {
-    border: 1px solid #ddd;
+    border: 1px solid var(--mainDarkblue);
     padding: 15px;
     border-radius: 10px;
     background: white;
@@ -221,27 +222,13 @@ button.btn {
 /* Input & Select Styling */
 .form-control, .form-select {
     border-radius: 10px;
-    border: 1px solid #A0FF70;
+    border: 1px solid var(--mainDarkblue);
     color: #000;
 }
 
 .form-control::placeholder {
     color: #666;
 }
-
-/* Button Styling */
-button.btn {
-    border-radius: 10px;
-    background-color: #000;
-    color: white;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-button.btn:hover {
-    background-color: #333;
-}
-
 
 .receipt-container {
     max-width: 600px;

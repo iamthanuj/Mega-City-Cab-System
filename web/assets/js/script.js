@@ -5,15 +5,6 @@
 
 
 
-//document.addEventListener("DOMContentLoaded", function () {
-//    let errorToast = document.getElementById("errorToast");
-//    if (errorToast.innerText.trim() !== "") {
-//        let toast = new bootstrap.Toast(errorToast);
-//        toast.show();
-//    }
-//});
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
     // Toast notification (optional)
