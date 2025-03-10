@@ -198,7 +198,8 @@ button.btn {
 .vehicle-option.selected {
     background-color: var(--mainDarkblue);
     color: #fff;
-    border-color: var(--mainDarkblue) ;;
+    border-color: var(--mainDarkblue) ;
+    ;
 }
 
 /* Vehicle Details Styling */
@@ -249,4 +250,12 @@ button.btn {
     .no-print {
         display: none;
     }
+}
+
+
+
+.booking-table{
+    width: 80%;
+    margin: auto;
+    margin-top: 100px;
 }

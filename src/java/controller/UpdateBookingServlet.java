@@ -28,18 +28,10 @@ public class UpdateBookingServlet extends HttpServlet {
             throws ServletException, IOException {
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-        String vehicleType = request.getParameter("vehicleType");
-        double distance = Double.parseDouble(request.getParameter("distance"));
-        double totalCost = Double.parseDouble(request.getParameter("totalCost"));
-        String startLocation = request.getParameter("startLocation");
-        String endLocation = request.getParameter("endLocation");
-        String datetimeStr = request.getParameter("datetime");
-        String address = request.getParameter("address");
 
         User user = (User) request.getSession().getAttribute("user");
         Integer sessionUserId = user.getId();
@@ -48,13 +40,28 @@ public class UpdateBookingServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Unauthorized user ID");
             return;
         }
-
+        
         try {
+
+            Booking existingBooking = bimpl.getBookingById(bookingId);
+            if (existingBooking == null || existingBooking.getUserId() != userId) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Booking not found or not owned by user");
+                return;
+            }
+
+            String datetimeStr = request.getParameter("datetime");
+            String address = request.getParameter("address");
+
+            if (datetimeStr == null || address == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "DateTime and Address are required");
+                return;
+            }
+            
             LocalDateTime datetime = LocalDateTime.parse(datetimeStr);
-            Booking booking = new Booking(userId, VehicleFactory.getVehicle(vehicleType), distance, totalCost,
-                    startLocation, endLocation, datetime, address);
-            booking.setBookingId(bookingId);
-            boolean success = bimpl.updateBooking(booking);
+            existingBooking.setDatetime(datetime);
+            existingBooking.setAdress(address);
+
+            boolean success = bimpl.updateBooking(existingBooking);
 
             if (success) {
                 response.sendRedirect("my-bookings.jsp?message=updated");
@@ -62,13 +69,13 @@ public class UpdateBookingServlet extends HttpServlet {
                 response.sendRedirect("my-bookings.jsp?error=updateFailed");
             }
         } catch (SQLException e) {
-            throw new ServletException("Database error while updating booking: " + e.getMessage(), e);
+            throw new ServletException("Database error while updating booking:"+ e.getMessage(), e);
         }
     }
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

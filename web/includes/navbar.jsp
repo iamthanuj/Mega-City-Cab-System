@@ -45,7 +45,7 @@
                     User user = (User) session.getAttribute("user");
                 %>
                 <a href="booking.jsp" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
-
+                
                 <%
                     if (user != null) { // User is logged in
                 %>
@@ -58,6 +58,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><p class="dropdown-item"><% out.print(user.getName()); %></p></li>
+                        <li><a class="dropdown-item" href="my-bookings.jsp">My Bookings</a></li>
                         <li><a class="dropdown-item" href="#">View Profile</a></li>
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
                     </ul>

@@ -145,3 +145,15 @@ function printReceipt() {
 
 
 
+
+function printBill(bookingId) {
+    var modalContent = document.querySelector('#viewBillModal' + bookingId + ' .modal-content');
+    var printWindow = window.open('', '', 'height=500,width=800');
+    printWindow.document.write('<html><head><title>Booking Bill</title>');
+    printWindow.document.write('<style>.receipt-details dt { font-weight: bold; }</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(modalContent.innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}

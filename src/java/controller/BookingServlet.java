@@ -30,8 +30,7 @@ public class BookingServlet extends HttpServlet {
         
         BookingDAOImpl bimpl = new BookingDAOImpl();
         
-        
-        // Get form parameters
+
         int userId = Integer.parseInt(request.getParameter("userId"));
         String vehicleType = request.getParameter("vehicleType");
         String startLocation = request.getParameter("startLocation");
@@ -41,8 +40,7 @@ public class BookingServlet extends HttpServlet {
         String datetimeStr = request.getParameter("datetime");
         String address = request.getParameter("address");
 
-        // Validate userId against session (security check)
-//        Integer  = (Integer) request.getSession().getAttribute("user");
+
         
         User user = (User) request.getSession().getAttribute("user");
         Integer sessionUserId = user.getId();

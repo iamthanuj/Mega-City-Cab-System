@@ -27,7 +27,7 @@
             BookingDAO bookingDAO = new BookingDAOImpl();
             List<Booking> bookings = bookingDAO.getAllBookings(user.getId());
         %>
-        <div>
+        <div class="booking-table">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -74,31 +74,34 @@
                             <div class="modal-body">
                                 <form action="updateBooking" method="POST">
                                     <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                    <input type="hidden" name="userId" value="<%=user.getId() %>">
+                                    <input type="hidden" name="userId" value="<%= user.getId()%>">
+                                    <!-- Hidden inputs to preserve distance and totalCost -->
+                                    <input type="hidden" name="distance" value="<%= booking.getDistance()%>">
+                                    <input type="hidden" name="totalCost" value="<%= booking.getTotalCost()%>">
 
                                     <div class="mb-3">
-                                        <label for="vehicleType<%= booking.getBookingId() %>" class="form-label">Vehicle Type</label>
-                                        <input type="text" id="vehicleType<%= booking.getBookingId() %>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" readonly>
+                                        <label for="vehicleType<%= booking.getBookingId()%>" class="form-label">Vehicle Type</label>
+                                        <input type="text" id="vehicleType<%= booking.getBookingId()%>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="distance<%= booking.getBookingId()%>" class="form-label">Distance (km)</label>
-                                        <input type="number" id="distance<%= booking.getBookingId()%>" name="distance" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required>
+                                        <input type="number" id="distance<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="totalCost<%= booking.getBookingId()%>" class="form-label">Total Cost (LKR)</label>
-                                        <input type="number" id="totalCost<%= booking.getBookingId()%>" name="totalCost" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required>
+                                        <input type="number" id="totalCost<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="startLocation<%= booking.getBookingId()%>" class="form-label">Start Location</label>
-                                        <input type="text" id="startLocation<%= booking.getBookingId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required>
+                                        <input type="text" id="startLocation<%= booking.getBookingId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required disabled>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="endLocation<%= booking.getBookingId()%>" class="form-label">End Location</label>
-                                        <input type="text" id="endLocation<%= booking.getBookingId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required>
+                                        <input type="text" id="endLocation<%= booking.getBookingId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required disabled>
                                     </div>
 
                                     <div class="mb-3">
@@ -132,7 +135,7 @@
                 %>
                 </tbody>
             </table>
-            <a href="/booking.jsp" class="btn btn-dark">Add New Booking</a>
+            <a href="booking.jsp" class="btn custom-btn-clr">Add New Booking</a>
         </div>
     </body>
 </html>

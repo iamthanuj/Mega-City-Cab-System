@@ -14,7 +14,7 @@ public class Booking {
 
     private int id;
     private int userId;
-    private Vehicle vehicle; // Now uses the Vehicle interface
+    private Vehicle vehicle; 
     private double distance;
     private double totalCost;
     private String startLocation;
@@ -76,6 +76,14 @@ public class Booking {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setAdress(String address){
+         this.address = address;
+    }
+
+    public void setDatetime(LocalDateTime datetime){
+        this.datetime = datetime;
     }
 
 }

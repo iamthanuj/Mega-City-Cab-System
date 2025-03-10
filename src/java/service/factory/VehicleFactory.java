@@ -16,6 +16,9 @@ import service.model.Vehicle;
 public class VehicleFactory {
 
     public static Vehicle getVehicle(String type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Vehicle type cannot be null");
+        }
         if (type.equalsIgnoreCase("Car")) {
             return new Car();
         } else if (type.equalsIgnoreCase("Van")) {
@@ -23,7 +26,7 @@ public class VehicleFactory {
         } else if (type.equalsIgnoreCase("Flex")) {
             return new Flex();
         }
-        return null;
+        throw new IllegalArgumentException("Unknown vehicle type: " + type);
     }
 
 }
