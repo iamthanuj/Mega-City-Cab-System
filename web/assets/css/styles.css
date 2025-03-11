@@ -255,25 +255,39 @@ button.btn {
 }
 
 
-.admin-section {
-    width: 80%;
-    margin: auto;
-    margin-top: 100px;
-    color: var(--mainDarkblue);
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: var(--mainDarkblue);
+    color: var(--mainColor);
+    padding: 20px;
 }
-.admin-section h2 {
+.sidebar h3 {
     color: var(--mainColor);
     margin-bottom: 20px;
 }
-.status-select {
+.sidebar a {
+    color: var(--secondaryColor);
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.sidebar a:hover {
+    background: var(--fadeDarkBlue);
+    color: var(--mainColor);
+}
+.content {
+    margin-left: 270px;
+    padding: 20px;
+}
+.status-select, .driver-select {
     border-radius: 10px;
     padding: 5px;
     background-color: var(--secondaryColor);
     border: 1px solid var(--mainDarkblue);
-}
-.driver-form {
-    background: var(--secondaryColor);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
 }

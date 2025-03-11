@@ -22,6 +22,7 @@ public class Booking {
     private LocalDateTime datetime;
     private String address;
     private String status;
+    private Integer driverId;
 
     public Booking(int userId, Vehicle vehicle, double distance, double totalCost,
             String startLocation, String endLocation, LocalDateTime datetime, String address) {
@@ -34,6 +35,7 @@ public class Booking {
         this.datetime = datetime;
         this.address = address;
         this.status = "Pending";
+        this.driverId = null;
     }
 
     public int getBookingId() {
@@ -96,4 +98,11 @@ public class Booking {
         this.status = status;
     }
 
+    public Integer getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Integer driverId) {
+        this.driverId = driverId;
+    }
 }

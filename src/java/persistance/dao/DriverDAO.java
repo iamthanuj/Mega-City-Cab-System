@@ -6,6 +6,8 @@ package persistance.dao;
 
 import service.model.Driver;
 import java.sql.SQLException;
+import java.util.List;
+import service.model.Driver;
 
 /**
  *
@@ -14,4 +16,6 @@ import java.sql.SQLException;
 public interface DriverDAO {
 
     boolean addDriver(Driver driver) throws SQLException;
+
+    List<Driver> getAllDrivers() throws SQLException;
 }

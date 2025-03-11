@@ -4,6 +4,9 @@
     Author     : Thanuja Fernando
 --%>
 
+<%@page import="service.model.Driver"%>
+<%@page import="persistance.impl.DriverDAOImpl"%>
+<%@page import="persistance.dao.DriverDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="service.model.Booking"%>
 <%@page import="persistance.dao.BookingDAO"%>
@@ -19,26 +22,35 @@
         <title>Admin Dashboard</title>
     </head>
     <body>
-        <%@include file="includes/navbar.jsp" %>
-
-        <%            if (user == null || !"admin".equals(user.getRole())) {
-                response.sendRedirect("login.jsp?error=unauthorized");
-                return;
-            }
-
-            BookingDAO bookingDAO = new BookingDAOImpl();
-            List<Booking> allBookings = null;
-            try {
-                allBookings = bookingDAO.getAllBookings(); // Fetch all bookings
-            } catch (SQLException e) {
-        %>
-        <div class="alert alert-danger">Error loading bookings: <%= e.getMessage()%></div>
-        <%
-                return;
-            }
-        %>
-        <div class="admin-section">
+        <div class="sidebar">
+            <h3>Admin Panel</h3>
+            <a href="admin-dashboard.jsp">Manage Bookings</a>
+            <a href="manage-drivers.jsp">Manage Drivers</a>
+            <a href="logout">Logout</a>
+        </div>
+        <div class="content">
             <h2>Manage Bookings</h2>
+            <%
+                User user = (User) session.getAttribute("user");
+                if (user == null || !"admin".equals(user.getRole())) {
+                    response.sendRedirect("login.jsp?error=unauthorized");
+                    return;
+                }
+
+                BookingDAO bookingDAO = new BookingDAOImpl();
+                DriverDAO driverDAO = new DriverDAOImpl();
+                List<Booking> allBookings = null;
+                List<Driver> allDrivers = null;
+                try {
+                    allBookings = bookingDAO.getAllBookings();
+                    allDrivers = driverDAO.getAllDrivers();
+                } catch (SQLException e) {
+            %>
+            <div class="alert alert-danger">Error loading data: <%= e.getMessage() %></div>
+            <%
+                    return;
+                }
+            %>
             <table class="table table-striped booking-table">
                 <thead>
                     <tr>
@@ -52,6 +64,7 @@
                         <th>Date & Time</th>
                         <th>Address</th>
                         <th>Status</th>
+                        <th>Driver</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -61,28 +74,44 @@
                             for (Booking booking : allBookings) {
                     %>
                     <tr>
-                        <td><%= booking.getBookingId()%></td>
-                        <td><%= booking.getUserId()%></td>
-                        <td><%= booking.getVehicle().getName()%> (<%= booking.getVehicle().getType()%>)</td>
-                        <td><%= booking.getDistance()%></td>
-                        <td><%= booking.getTotalCost()%></td>
-                        <td><%= booking.getStartLocation()%></td>
-                        <td><%= booking.getEndLocation()%></td>
-                        <td><%= booking.getDatetime()%></td>
-                        <td><%= booking.getAddress()%></td>
+                        <td><%= booking.getBookingId() %></td>
+                        <td><%= booking.getUserId() %></td>
+                        <td><%= booking.getVehicle().getName() %> (<%= booking.getVehicle().getType() %>)</td>
+                        <td><%= booking.getDistance() %></td>
+                        <td><%= booking.getTotalCost() %></td>
+                        <td><%= booking.getStartLocation() %></td>
+                        <td><%= booking.getEndLocation() %></td>
+                        <td><%= booking.getDatetime() %></td>
+                        <td><%= booking.getAddress() %></td>
                         <td>
                             <form action="updateStatus" method="POST">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
                                 <select name="status" class="status-select" onchange="this.form.submit()">
-                                    <option value="Pending" <%= "Pending".equals(booking.getStatus()) ? "selected" : ""%>>Pending</option>
-                                    <option value="Confirmed" <%= "Confirmed".equals(booking.getStatus()) ? "selected" : ""%>>Confirmed</option>
+                                    <option value="Pending" <%= "Pending".equals(booking.getStatus()) ? "selected" : "" %>>Pending</option>
+                                    <option value="Confirmed" <%= "Confirmed".equals(booking.getStatus()) ? "selected" : "" %>>Confirmed</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="assignDriver" method="POST">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                <select name="driverId" class="driver-select" onchange="this.form.submit()">
+                                    <option value="">Unassigned</option>
+                                    <%
+                                        for (Driver driver : allDrivers) {
+                                            String selected = (booking.getDriverId() != null && booking.getDriverId().equals(driver.getId())) ? "selected" : "";
+                                    %>
+                                    <option value="<%= driver.getId() %>" <%= selected %>><%= driver.getName() %> (ID: <%= driver.getId() %>)</option>
+                                    <%
+                                        }
+                                    %>
                                 </select>
                             </form>
                         </td>
                         <td>
                             <form action="deleteBooking" method="POST" style="display:inline;">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                <button type="submit" class="btn btn-danger btn-sm custom-btn-clr" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                <button type="submit" class="btn btn-danger btn-sm custom-btn-clr" onclick="return confirm('Are you sure?');">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -91,41 +120,13 @@
                     } else {
                     %>
                     <tr>
-                        <td colspan="11" class="text-center">No bookings found.</td>
+                        <td colspan="12" class="text-center">No bookings found.</td>
                     </tr>
                     <%
                         }
                     %>
                 </tbody>
             </table>
-
-            <!-- Driver Management Section -->
-            <h2>Add Driver</h2>
-            <div class="driver-form">
-                <form action="addDriver" method="POST">
-                    <div class="mb-3">
-                        <label for="driverName" class="form-label">Driver Name</label>
-                        <input type="text" id="driverName" name="driverName" class="form-control dark-inputs" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="driverLicense" class="form-label">License Number</label>
-                        <input type="text" id="driverLicense" name="driverLicense" class="form-control dark-inputs" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="driverPhone" class="form-label">Phone Number</label>
-                        <input type="number" id="driverPhone" name="driverPhone" class="form-control dark-inputs" required>
-                    </div>
-                    <button type="submit" class="btn btn-custom">Add Driver</button>
-                </form>
-                <%
-                    String driverMessage = request.getParameter("message");
-                    if ("driverAdded".equals(driverMessage)) {
-                %>
-                <div class="alert alert-success mt-3">Driver added successfully!</div>
-                <%
-                    }
-                %>
-            </div>
         </div>
     </body>
 </html>

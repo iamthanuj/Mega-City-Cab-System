@@ -21,7 +21,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public boolean addBooking(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (UserId, VehicleType, Distance, TotalCost, StartLocation, EndLocation, DateTime, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bookings (UserId, VehicleType, Distance, TotalCost, StartLocation, EndLocation, DateTime, Address, Status, DriverId) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, booking.getUserId());
             pstmt.setString(2, booking.getVehicle().getType());
@@ -31,6 +31,12 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setString(6, booking.getEndLocation());
             pstmt.setTimestamp(7, Timestamp.valueOf(booking.getDatetime()));
             pstmt.setString(8, booking.getAddress());
+            pstmt.setString(9, booking.getStatus());
+            if (booking.getDriverId() != null) {
+                pstmt.setInt(10, booking.getDriverId());
+            } else {
+                pstmt.setNull(10, Types.INTEGER);
+            }
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
