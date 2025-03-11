@@ -45,7 +45,7 @@
                     User user = (User) session.getAttribute("user");
                 %>
                 <a href="booking.jsp" class="btn btn-dark me-2 custom-btn-clr">Book a ride</a>
-                
+
                 <%
                     if (user != null) { // User is logged in
                 %>

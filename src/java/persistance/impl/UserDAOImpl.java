@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean registerUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (FullName, NIC,Email,Phone,Password) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO users (FullName, NIC,Email,Phone,Password,Role) VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -29,6 +29,7 @@ public class UserDAOImpl implements UserDAO {
             pstmt.setString(3, user.getEmail());
             pstmt.setInt(4, user.getPhone());
             pstmt.setString(5, user.getPassword());
+            pstmt.setString(6, user.getRole());
 
             int affectedRows = pstmt.executeUpdate();
             
@@ -64,6 +65,7 @@ public class UserDAOImpl implements UserDAO {
                 if (storedPassword.equals(password)) {
                     user = new User(rs.getString("FullName"), rs.getString("NIC"), rs.getString("Email"), rs.getInt("Phone"), rs.getString("Password"));
                     user.setId(rs.getInt("UserId"));
+                    user.setRole(rs.getString("Role"));
                     return user;
                 } else {
                     return null;

@@ -14,13 +14,14 @@ public class Booking {
 
     private int id;
     private int userId;
-    private Vehicle vehicle; 
+    private Vehicle vehicle;
     private double distance;
     private double totalCost;
     private String startLocation;
     private String endLocation;
     private LocalDateTime datetime;
     private String address;
+    private String status;
 
     public Booking(int userId, Vehicle vehicle, double distance, double totalCost,
             String startLocation, String endLocation, LocalDateTime datetime, String address) {
@@ -32,6 +33,7 @@ public class Booking {
         this.endLocation = endLocation;
         this.datetime = datetime;
         this.address = address;
+        this.status = "Pending";
     }
 
     public int getBookingId() {
@@ -78,12 +80,20 @@ public class Booking {
         return address;
     }
 
-    public void setAdress(String address){
-         this.address = address;
+    public void setAdress(String address) {
+        this.address = address;
     }
 
-    public void setDatetime(LocalDateTime datetime){
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

@@ -21,10 +21,10 @@
             <h2>Login</h2>
             <form action="login"  method="post">
                 <div class="mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    <input type="email" name="email" class="form-control dark-inputs" placeholder="Email" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="password" class="form-control dark-inputs" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-custom">Login</button>
             </form>

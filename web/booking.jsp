@@ -54,7 +54,7 @@
                     <div class="row mt-3 g-2">
                         <div class="col-12 col-md-5">
                             <label for="start-location" class="form-label">Start Location</label>
-                            <select id="start-location" class="form-select">
+                            <select id="start-location" class="form-select" required>
                                 <option value="Colombo">Colombo</option>
                                 <option value="Kandy">Kandy</option>
                                 <option value="Galle">Galle</option>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-12 col-md-5">
                             <label for="end-location" class="form-label">End Location</label>
-                            <select id="end-location" class="form-select">
+                            <select id="end-location" class="form-select" required>
                                 <option value="Colombo">Colombo</option>
                                 <option value="Kandy">Kandy</option>
                                 <option value="Galle">Galle</option>

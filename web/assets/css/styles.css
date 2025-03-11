@@ -65,14 +65,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 .form-control {
     background: transparent;
-    border: 1px solid #A0FF70;
-    color: #E8FFDC;
+    border: 1px solid #dee2e6;
 }
 
 .form-control::placeholder {
-    color: #E8FFDC;
+    color: white;
     opacity: 0.7;
 }
+
+.dark-inputs{
+    color: white;
+}
+
 
 .btn-custom {
     background-color: #A0FF70;
@@ -220,16 +224,6 @@ button.btn {
     color: #555;
 }
 
-/* Input & Select Styling */
-.form-control, .form-select {
-    border-radius: 10px;
-    border: 1px solid var(--mainDarkblue);
-    color: #000;
-}
-
-.form-control::placeholder {
-    color: #666;
-}
 
 .receipt-container {
     max-width: 600px;
@@ -258,4 +252,28 @@ button.btn {
     width: 80%;
     margin: auto;
     margin-top: 100px;
+}
+
+
+.admin-section {
+    width: 80%;
+    margin: auto;
+    margin-top: 100px;
+    color: var(--mainDarkblue);
+}
+.admin-section h2 {
+    color: var(--mainColor);
+    margin-bottom: 20px;
+}
+.status-select {
+    border-radius: 10px;
+    padding: 5px;
+    background-color: var(--secondaryColor);
+    border: 1px solid var(--mainDarkblue);
+}
+.driver-form {
+    background: var(--secondaryColor);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
 }

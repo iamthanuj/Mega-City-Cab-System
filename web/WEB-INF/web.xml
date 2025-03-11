@@ -24,6 +24,10 @@
         <servlet-name>DeleteBookingServlet</servlet-name>
         <servlet-class>controller.DeleteBookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddDriverServlet</servlet-name>
+        <servlet-class>controller.AddDriverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -47,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>DeleteBookingServlet</servlet-name>
         <url-pattern>/deleteBooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDriverServlet</servlet-name>
+        <url-pattern>/AddDriverServlet</url-pattern>
     </servlet-mapping>
 </web-app>

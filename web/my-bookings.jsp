@@ -38,6 +38,7 @@
                         <th>End Location</th>
                         <th>Date & Time</th>
                         <th>Address</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,11 +55,12 @@
                         <td><%= booking.getEndLocation()%></td>
                         <td><%= booking.getDatetime()%></td>
                         <td><%= booking.getAddress()%></td>
+                        <td><%= booking.getStatus()%></td>
                         <td>
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= booking.getBookingId()%>">Update</button>
+                            <button class="btn theme-btn btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= booking.getBookingId()%>">Update</button>
                             <form action="deleteBooking" method="POST" style="display:inline;">
                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
+                                <button type="submit" class="btn custom-btn-clr btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
                             </form>
                         </td>
                     </tr>

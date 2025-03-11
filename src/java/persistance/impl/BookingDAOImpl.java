@@ -77,6 +77,19 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
+    public List<Booking> getAllBookings() throws SQLException {
+        String sql = "SELECT * FROM bookings ORDER BY DateTime DESC";
+        List<Booking> bookings = new ArrayList<>();
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                bookings.add(createBookingFromResultSet(rs));
+            }
+            return bookings;
+        }
+    }
+
+    @Override
     public boolean deleteBooking(int bookingId) throws SQLException {
         String sql = "DELETE FROM bookings WHERE BookingId = ?";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -101,18 +114,15 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setString(5, booking.getEndLocation());
             pstmt.setTimestamp(6, Timestamp.valueOf(booking.getDatetime()));
             pstmt.setString(7, booking.getAddress());
-            pstmt.setInt(8, booking.getBookingId()); // Updated to BookingId
-            pstmt.setInt(9, booking.getUserId());
+            pstmt.setString(8, booking.getStatus());
+            pstmt.setInt(9, booking.getBookingId());
+            pstmt.setInt(10, booking.getUserId());
+
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0;
         } catch (SQLException e) {
             throw new SQLException("Failed to update booking: " + e.getMessage(), e);
         }
-    }
-
-    @Override
-    public List<Booking> getAllBookings() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private Booking createBookingFromResultSet(ResultSet rs) throws SQLException {
@@ -125,11 +135,13 @@ public class BookingDAOImpl implements BookingDAO {
         String endLocation = rs.getString("EndLocation");
         Timestamp datetime = rs.getTimestamp("DateTime");
         String address = rs.getString("Address");
+        String status = rs.getString("Status");
 
         Vehicle vehicle = VehicleFactory.getVehicle(vehicleType);
         Booking booking = new Booking(userId, vehicle, distance, totalCost, startLocation, endLocation,
                 datetime.toLocalDateTime(), address);
         booking.setBookingId(bookingId); // Updated to setBookingId
+        booking.setStatus(status);
         return booking;
     }
 }

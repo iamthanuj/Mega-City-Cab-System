@@ -19,7 +19,6 @@ import service.services.UserService;
  *
  * @author Thanuja Fernando
  */
-
 public class LoginServlet extends HttpServlet {
 
     private UserService userService = new UserService();
@@ -36,18 +35,26 @@ public class LoginServlet extends HttpServlet {
             User user = userService.authenticateUser(email, password);
 
             if (user != null) {
-                
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                System.out.println(user.getName());
-                response.sendRedirect("index.jsp");
+
+                // Redirect based on role
+                if ("admin".equals(user.getRole())) {
+                    response.sendRedirect("admin-dashboard.jsp");
+                } else {
+                    response.sendRedirect("my-bookings.jsp"); // Or "index.jsp" if preferred
+                }
+
             } else {
-                
+
                 request.setAttribute("errorMessage", "Invalid Email or Password");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
+            e.printStackTrace(); // Replace with proper logging in production
+            request.setAttribute("errorMessage", "An error occurred during login. Please try again.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 
     }
