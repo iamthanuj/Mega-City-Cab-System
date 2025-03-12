@@ -32,6 +32,10 @@
         <servlet-name>AssignDriverServlet</servlet-name>
         <servlet-class>controller.AssignDriverServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateStatusServlet</servlet-name>
+        <servlet-class>controller.UpdateStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -63,5 +67,9 @@
     <servlet-mapping>
         <servlet-name>AssignDriverServlet</servlet-name>
         <url-pattern>/assignDriver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStatusServlet</servlet-name>
+        <url-pattern>/updateStatus</url-pattern>
     </servlet-mapping>
 </web-app>

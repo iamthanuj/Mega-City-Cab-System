@@ -15,4 +15,5 @@ public interface UserDAO {
     boolean registerUser(User user)throws SQLException;
     boolean checkUserExists(String email) throws SQLException;
     User authenticateUser(String email, String password);
+    boolean deleteUser(int userId) throws SQLException;
 }

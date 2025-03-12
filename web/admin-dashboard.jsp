@@ -26,6 +26,7 @@
             <h3>Admin Panel</h3>
             <a href="admin-dashboard.jsp">Manage Bookings</a>
             <a href="manage-drivers.jsp">Manage Drivers</a>
+            <a href="manage-users.jsp">Manage Users</a>
             <a href="logout">Logout</a>
         </div>
         <div class="content">
@@ -42,13 +43,19 @@
                 // Display success or error messages
                 String message = request.getParameter("message");
                 String error = request.getParameter("error");
-                if ("driverAssigned".equals(message)) {
+                if ("driverAssigned".equals(message) || "statusUpdated".equals(message)) {
             %>
-            <div class="alert alert-success">Driver assigned successfully!</div>
+            <div class="alert alert-success">
+                <% if ("driverAssigned".equals(message)) { %>Driver assigned successfully!<% } %>
+                <% if ("statusUpdated".equals(message)) { %>Status updated successfully!<% } %>
+            </div>
             <%
-            } else if ("assignFailed".equals(error)) {
+            } else if ("assignFailed".equals(error) || "updateFailed".equals(error)) {
             %>
-            <div class="alert alert-danger">Failed to assign driver.</div>
+            <div class="alert alert-danger">
+                <% if ("assignFailed".equals(error)) { %>Failed to assign driver.<% } %>
+                <% if ("updateFailed".equals(error)) { %>Failed to update status.<% } %>
+            </div>
             <%
                 }
             %>
