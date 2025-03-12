@@ -21,7 +21,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public boolean addBooking(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (UserId, VehicleType, Distance, TotalCost, StartLocation, EndLocation, DateTime, Address, Status, DriverId) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO bookings (UserId, VehicleType, Distance, TotalCost, StartLocation, EndLocation, DateTime, Address, Status, DriverId) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, booking.getUserId());
             pstmt.setString(2, booking.getVehicle().getType());
@@ -110,7 +110,8 @@ public class BookingDAOImpl implements BookingDAO {
     @Override
     public boolean updateBooking(Booking booking) throws SQLException {
         String sql = "UPDATE bookings SET VehicleType = ?, Distance = ?, TotalCost = ?, "
-                + "StartLocation = ?, EndLocation = ?, DateTime = ?, Address = ? "
+                + "StartLocation = ?, EndLocation = ?, DateTime = ?, Address = ?, "
+                + "Status = ?, DriverId = ? "
                 + "WHERE BookingId = ? AND UserId = ?";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, booking.getVehicle().getType());
@@ -121,8 +122,13 @@ public class BookingDAOImpl implements BookingDAO {
             pstmt.setTimestamp(6, Timestamp.valueOf(booking.getDatetime()));
             pstmt.setString(7, booking.getAddress());
             pstmt.setString(8, booking.getStatus());
-            pstmt.setInt(9, booking.getBookingId());
-            pstmt.setInt(10, booking.getUserId());
+            if (booking.getDriverId() != null) {
+                pstmt.setInt(9, booking.getDriverId());
+            } else {
+                pstmt.setNull(9, Types.INTEGER);
+            }
+            pstmt.setInt(10, booking.getBookingId());
+            pstmt.setInt(11, booking.getUserId());
 
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0;
@@ -142,12 +148,14 @@ public class BookingDAOImpl implements BookingDAO {
         Timestamp datetime = rs.getTimestamp("DateTime");
         String address = rs.getString("Address");
         String status = rs.getString("Status");
+        Integer driverId = rs.getObject("DriverId", Integer.class); // Handles null
 
         Vehicle vehicle = VehicleFactory.getVehicle(vehicleType);
-        Booking booking = new Booking(userId, vehicle, distance, totalCost, startLocation, endLocation,
-                datetime.toLocalDateTime(), address);
-        booking.setBookingId(bookingId); // Updated to setBookingId
+        Booking booking = new Booking(userId, vehicle, distance, totalCost, startLocation,
+                endLocation, datetime.toLocalDateTime(), address);
+        booking.setBookingId(bookingId);
         booking.setStatus(status);
+        booking.setDriverId(driverId);
         return booking;
     }
 }

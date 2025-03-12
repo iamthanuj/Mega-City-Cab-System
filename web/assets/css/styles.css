@@ -291,3 +291,36 @@ button.btn {
     background-color: var(--secondaryColor);
     border: 1px solid var(--mainDarkblue);
 }
+.driver-form {
+    background: var(--secondaryColor);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+}
+
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.alert-success {
+    background-color: var(--mainColor);
+    color: var(--mainDarkblue);
+}
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.driver-select option[value=""] {
+    color: #888; /* Gray for "Unassigned" */
+}
+.driver-select option:not([value=""]) {
+    color: var(--mainDarkblue); /* Dark blue for assigned drivers */
+}
+.driver-select option[selected]:not([value=""]) {
+    background-color: var(--mainColor); /* Highlight assigned driver */
+    color: var(--mainDarkblue);
+}

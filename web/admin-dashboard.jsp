@@ -37,6 +37,23 @@
                     return;
                 }
 
+                System.out.println("Admin user: " + user.getName());
+
+                // Display success or error messages
+                String message = request.getParameter("message");
+                String error = request.getParameter("error");
+                if ("driverAssigned".equals(message)) {
+            %>
+            <div class="alert alert-success">Driver assigned successfully!</div>
+            <%
+            } else if ("assignFailed".equals(error)) {
+            %>
+            <div class="alert alert-danger">Failed to assign driver.</div>
+            <%
+                }
+            %>
+
+            <%
                 BookingDAO bookingDAO = new BookingDAOImpl();
                 DriverDAO driverDAO = new DriverDAOImpl();
                 List<Booking> allBookings = null;
@@ -46,7 +63,7 @@
                     allDrivers = driverDAO.getAllDrivers();
                 } catch (SQLException e) {
             %>
-            <div class="alert alert-danger">Error loading data: <%= e.getMessage() %></div>
+            <div class="alert alert-danger">Error loading data: <%= e.getMessage()%></div>
             <%
                     return;
                 }
@@ -74,34 +91,34 @@
                             for (Booking booking : allBookings) {
                     %>
                     <tr>
-                        <td><%= booking.getBookingId() %></td>
-                        <td><%= booking.getUserId() %></td>
-                        <td><%= booking.getVehicle().getName() %> (<%= booking.getVehicle().getType() %>)</td>
-                        <td><%= booking.getDistance() %></td>
-                        <td><%= booking.getTotalCost() %></td>
-                        <td><%= booking.getStartLocation() %></td>
-                        <td><%= booking.getEndLocation() %></td>
-                        <td><%= booking.getDatetime() %></td>
-                        <td><%= booking.getAddress() %></td>
+                        <td><%= booking.getBookingId()%></td>
+                        <td><%= booking.getUserId()%></td>
+                        <td><%= booking.getVehicle().getName()%> (<%= booking.getVehicle().getType()%>)</td>
+                        <td><%= booking.getDistance()%></td>
+                        <td><%= booking.getTotalCost()%></td>
+                        <td><%= booking.getStartLocation()%></td>
+                        <td><%= booking.getEndLocation()%></td>
+                        <td><%= booking.getDatetime()%></td>
+                        <td><%= booking.getAddress()%></td>
                         <td>
                             <form action="updateStatus" method="POST">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
                                 <select name="status" class="status-select" onchange="this.form.submit()">
-                                    <option value="Pending" <%= "Pending".equals(booking.getStatus()) ? "selected" : "" %>>Pending</option>
-                                    <option value="Confirmed" <%= "Confirmed".equals(booking.getStatus()) ? "selected" : "" %>>Confirmed</option>
+                                    <option value="Pending" <%= "Pending".equals(booking.getStatus()) ? "selected" : ""%>>Pending</option>
+                                    <option value="Confirmed" <%= "Confirmed".equals(booking.getStatus()) ? "selected" : ""%>>Confirmed</option>
                                 </select>
                             </form>
                         </td>
                         <td>
                             <form action="assignDriver" method="POST">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
                                 <select name="driverId" class="driver-select" onchange="this.form.submit()">
-                                    <option value="">Unassigned</option>
+                                    <option value="" <%= (booking.getDriverId() == null) ? "selected" : ""%>>Unassigned</option>
                                     <%
                                         for (Driver driver : allDrivers) {
                                             String selected = (booking.getDriverId() != null && booking.getDriverId().equals(driver.getId())) ? "selected" : "";
                                     %>
-                                    <option value="<%= driver.getId() %>" <%= selected %>><%= driver.getName() %> (ID: <%= driver.getId() %>)</option>
+                                    <option value="<%= driver.getId()%>" <%= selected%>><%= driver.getName()%> (ID: <%= driver.getId()%>)</option>
                                     <%
                                         }
                                     %>
@@ -110,7 +127,7 @@
                         </td>
                         <td>
                             <form action="deleteBooking" method="POST" style="display:inline;">
-                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
                                 <button type="submit" class="btn btn-danger btn-sm custom-btn-clr" onclick="return confirm('Are you sure?');">Delete</button>
                             </form>
                         </td>
