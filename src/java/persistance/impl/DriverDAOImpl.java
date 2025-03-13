@@ -24,7 +24,7 @@ public class DriverDAOImpl implements DriverDAO {
     @Override
     public boolean addDriver(Driver driver) throws SQLException {
         String sql = "INSERT INTO drivers (Name, LicenseNumber, Phone) VALUES (?, ?, ?)";
-        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, driver.getName());
             pstmt.setString(2, driver.getLicenseNumber()); // Matches the Driver class field
@@ -77,9 +77,37 @@ public class DriverDAOImpl implements DriverDAO {
         String sql = "DELETE FROM drivers WHERE DriverId = ?";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, driverId);
-            int rowsDeleted = pstmt.executeUpdate();
-            return rowsDeleted > 0;
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
         }
+    }
+
+    @Override
+    public Driver getDriverById(int id) throws SQLException {
+        String sql = "SELECT * FROM drivers WHERE DriverId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Driver(rs.getString("Name"), rs.getString("LicenseNumber"), rs.getInt("Phone"));
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasAssignedBookings(int driverId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM bookings WHERE DriverId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, driverId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
     }
 
 }

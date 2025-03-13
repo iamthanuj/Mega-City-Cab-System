@@ -40,6 +40,7 @@
                 // Display success or error messages
                 String message = request.getParameter("message");
                 String error = request.getParameter("error");
+                System.out.println("Message: " + message + ", Error: " + error); // Debug log
                 if ("driverAdded".equals(message)) {
             %>
             <div class="alert alert-success">Driver added successfully!</div>
@@ -63,6 +64,10 @@
             } else if ("deleteFailed".equals(error)) {
             %>
             <div class="alert alert-danger">Failed to delete driver.</div>
+            <%
+            } else if ("cannotDeleteAssigned".equals(error)) {
+            %>
+            <div class="alert alert-danger">Cannot delete driver: Driver is assigned to existing bookings.</div>
             <%
                 }
             %>
@@ -123,7 +128,7 @@
                         <input type="hidden" name="driverId" value="<%= driver.getId()%>">
                         <button type="button" class="btn btn-sm custom-btn-clr" 
                                 data-bs-toggle="modal" data-bs-target="#updateModal<%= driver.getId()%>">Update</button>
-                        <button type="button" class="btn btn-sm  theme-btn" 
+                        <button type="button" class="btn btn-sm theme-btn" 
                                 data-bs-toggle="modal" data-bs-target="#deleteModal<%= driver.getId()%>">Delete</button>
                     </td>
                 </form>

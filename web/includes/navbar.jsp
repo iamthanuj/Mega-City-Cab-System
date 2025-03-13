@@ -34,7 +34,7 @@
                     <a class="nav-link text-dark" href="#">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Help</a>
+                    <a class="nav-link text-dark" href="help.jsp">Help</a>
                 </li>
             </ul>
 

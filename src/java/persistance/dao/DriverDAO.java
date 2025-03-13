@@ -22,4 +22,8 @@ public interface DriverDAO {
     public boolean updateDriver(Driver driver) throws SQLException;
 
     public boolean deleteDriver(int driverId) throws SQLException;
+
+    public Driver getDriverById(int id) throws SQLException;
+
+    public boolean hasAssignedBookings(int driverId) throws SQLException;
 }

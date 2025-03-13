@@ -4,6 +4,9 @@
     Author     : Thanuja Fernando
 --%>
 
+<%@page import="persistance.impl.DriverDAOImpl"%>
+<%@page import="persistance.dao.DriverDAO"%>
+<%@page import="service.model.Driver"%>
 <%@page import="java.util.List"%>
 <%@page import="service.model.Booking"%>
 <%@page import="persistance.impl.BookingDAOImpl"%>
@@ -16,10 +19,11 @@
         <%@include file="includes/globalStyles.jsp" %>
         <title>Booking</title>
     </head>
-    <body>
+   <body>
         <%@include file="includes/navbar.jsp" %>
 
-        <%            if (user == null) {
+        <% 
+            if (user == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
@@ -38,6 +42,7 @@
                         <th>End Location</th>
                         <th>Date & Time</th>
                         <th>Address</th>
+                        <th>Assigned Driver</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -45,7 +50,10 @@
                 <tbody>
                     <%
                         if (bookings != null && !bookings.isEmpty()) {
+                            DriverDAO driverDAO = new DriverDAOImpl(); // Instantiate DriverDAO
                             for (Booking booking : bookings) {
+                                Integer driverId = booking.getDriverId(); // Assuming Booking has getDriverId()
+                                Driver driver = (driverId != null) ? driverDAO.getDriverById(driverId) : null;
                     %>
                     <tr>
                         <td><%= booking.getVehicle().getName()%> (<%= booking.getVehicle().getType()%>)</td>
@@ -55,6 +63,17 @@
                         <td><%= booking.getEndLocation()%></td>
                         <td><%= booking.getDatetime()%></td>
                         <td><%= booking.getAddress()%></td>
+                        <td>
+                            <% if (driver != null) { %>
+                                <div class="driver-details">
+                                    <strong>Name:</strong> <%= driver.getName() %><br>
+                                    <strong>License #:</strong> <%= driver.getLicenseNumber() %><br>
+                                    <strong>Phone:</strong> <%= driver.getPhone() %>
+                                </div>
+                            <% } else { %>
+                                <span class="no-driver">Not assigned</span>
+                            <% } %>
+                        </td>
                         <td><%= booking.getStatus()%></td>
                         <td>
                             <button class="btn theme-btn btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= booking.getBookingId()%>">Update</button>
@@ -66,75 +85,84 @@
                     </tr>
 
                     <!-- Update Modal -->
-                <div class="modal fade" id="updateModal<%= booking.getBookingId()%>" tabindex="-1" aria-labelledby="updateModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateModalLabel<%= booking.getBookingId()%>">Update Booking</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="updateBooking" method="POST">
-                                    <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                    <input type="hidden" name="userId" value="<%= user.getId()%>">
-                                    <!-- Hidden inputs to preserve distance and totalCost -->
-                                    <input type="hidden" name="distance" value="<%= booking.getDistance()%>">
-                                    <input type="hidden" name="totalCost" value="<%= booking.getTotalCost()%>">
+                    <div class="modal fade" id="updateModal<%= booking.getBookingId()%>" tabindex="-1" aria-labelledby="updateModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel<%= booking.getBookingId()%>">Update Booking</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="updateBooking" method="POST">
+                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
+                                        <input type="hidden" name="userId" value="<%= user.getId()%>">
+                                        <!-- Hidden inputs to preserve distance and totalCost -->
+                                        <input type="hidden" name="distance" value="<%= booking.getDistance()%>">
+                                        <input type="hidden" name="totalCost" value="<%= booking.getTotalCost()%>">
 
-                                    <div class="mb-3">
-                                        <label for="vehicleType<%= booking.getBookingId()%>" class="form-label">Vehicle Type</label>
-                                        <input type="text" id="vehicleType<%= booking.getBookingId()%>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" disabled>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="vehicleType<%= booking.getBookingId()%>" class="form-label">Vehicle Type</label>
+                                            <input type="text" id="vehicleType<%= booking.getBookingId()%>" name="vehicleType" class="form-control" value="<%= booking.getVehicle().getType()%>" disabled>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="distance<%= booking.getBookingId()%>" class="form-label">Distance (km)</label>
-                                        <input type="number" id="distance<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required disabled>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="distance<%= booking.getBookingId()%>" class="form-label">Distance (km)</label>
+                                            <input type="number" id="distance<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getDistance()%>" step="0.01" required disabled>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="totalCost<%= booking.getBookingId()%>" class="form-label">Total Cost (LKR)</label>
-                                        <input type="number" id="totalCost<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required disabled>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="totalCost<%= booking.getBookingId()%>" class="form-label">Total Cost (LKR)</label>
+                                            <input type="number" id="totalCost<%= booking.getBookingId()%>" class="form-control" value="<%= booking.getTotalCost()%>" step="0.01" required disabled>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="startLocation<%= booking.getBookingId()%>" class="form-label">Start Location</label>
-                                        <input type="text" id="startLocation<%= booking.getBookingId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required disabled>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="startLocation<%= booking.getBookingId()%>" class="form-label">Start Location</label>
+                                            <input type="text" id="startLocation<%= booking.getBookingId()%>" name="startLocation" class="form-control" value="<%= booking.getStartLocation()%>" required disabled>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="endLocation<%= booking.getBookingId()%>" class="form-label">End Location</label>
-                                        <input type="text" id="endLocation<%= booking.getBookingId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required disabled>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="endLocation<%= booking.getBookingId()%>" class="form-label">End Location</label>
+                                            <input type="text" id="endLocation<%= booking.getBookingId()%>" name="endLocation" class="form-control" value="<%= booking.getEndLocation()%>" required disabled>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="datetime<%= booking.getBookingId()%>" class="form-label">Date & Time</label>
-                                        <input type="datetime-local" id="datetime<%= booking.getBookingId()%>" name="datetime" class="form-control" value="<%= booking.getDatetime().toString().substring(0, 16)%>" required>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="datetime<%= booking.getBookingId()%>" class="form-label">Date & Time</label>
+                                            <input type="datetime-local" id="datetime<%= booking.getBookingId()%>" name="datetime" class="form-control" value="<%= booking.getDatetime().toString().substring(0, 16)%>" required>
+                                        </div>
 
-                                    <div class="mb-3">
-                                        <label for="address<%= booking.getBookingId()%>" class="form-label">Address</label>
-                                        <input type="text" id="address<%= booking.getBookingId()%>" name="address" class="form-control" value="<%= booking.getAddress()%>" required>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label for="address<%= booking.getBookingId()%>" class="form-label">Address</label>
+                                            <input type="text" id="address<%= booking.getBookingId()%>" name="address" class="form-control" value="<%= booking.getAddress()%>" required>
+                                        </div>
 
-                                    <button type="submit" class="btn btn-dark">Save Changes</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <% if (driver != null) { %>
+                                        <div class="mb-3 driver-details">
+                                            <label class="form-label">Assigned Driver</label>
+                                            <input type="text" class="form-control" value="Name: <%= driver.getName() %>, License #: <%= driver.getLicenseNumber() %>, Phone: <%= driver.getPhone() %>" disabled>
+                                        </div>
+                                        <% } else { %>
+                                        <p class="no-driver">No driver assigned yet.</p>
+                                        <% } %>
+
+                                        <button type="submit" class="btn btn-dark">Save Changes</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <%
-                    }
-                } else {
-                %>
-                <tr>
-                    <td colspan="8" class="text-center">No bookings found.</td>
-                </tr>
-                <%
-                    }
-                %>
+                    <%
+                            }
+                        } else {
+                    %>
+                    <tr>
+                        <td colspan="9" class="text-center">No bookings found.</td>
+                    </tr>
+                    <%
+                        }
+                    %>
                 </tbody>
             </table>
             <a href="booking.jsp" class="btn custom-btn-clr">Add New Booking</a>

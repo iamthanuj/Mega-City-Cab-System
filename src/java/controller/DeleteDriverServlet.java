@@ -24,25 +24,36 @@ public class DeleteDriverServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int driverId;
-        try {
-            driverId = Integer.parseInt(request.getParameter("driverId"));
-        } catch (NumberFormatException e) {
-            response.sendRedirect("manage-drivers.jsp?error=invalidDriverId");
-            return;
-        }
+        int driverId = Integer.parseInt(request.getParameter("driverId"));
 
         try {
+            // Check if the driver is assigned to any bookings
+            boolean hasBookings = driverDAO.hasAssignedBookings(driverId);
+            System.out.println("Driver ID: " + driverId + " has assigned bookings: " + hasBookings); // Debug log
+            if (hasBookings) {
+                response.sendRedirect("manage-drivers.jsp?error=cannotDeleteAssigned");
+                return;
+            }
 
-            boolean success = driverDAO.deleteDriver(driverId);
-            if (success) {
+            // If no bookings, proceed with deletion
+            boolean deleted = driverDAO.deleteDriver(driverId);
+            if (deleted) {
                 response.sendRedirect("manage-drivers.jsp?message=driverDeleted");
             } else {
                 response.sendRedirect("manage-drivers.jsp?error=deleteFailed");
             }
         } catch (SQLException e) {
-            throw new ServletException("Error deleting driver: " + e.getMessage(), e);
+            // Log the exception for debugging
+            e.printStackTrace();
+            // Redirect with a specific error key if deletion fails due to SQL constraints
+            String errorKey = e.getMessage().contains("foreign key constraint fails")
+                    ? "cannotDeleteAssigned"
+                    : "deleteFailed";
+            response.sendRedirect("manage-drivers.jsp?error=" + errorKey);
+        } catch (Exception e) {
+            // Handle any other unexpected errors
+            e.printStackTrace();
+            response.sendRedirect("manage-drivers.jsp?error=deleteFailed");
         }
     }
 

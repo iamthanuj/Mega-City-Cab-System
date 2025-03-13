@@ -22,8 +22,7 @@
                     <p>Thank you for your booking!</p>
                 </div>
 
-                <% 
-                    Booking booking = (Booking) session.getAttribute("latestBooking");
+                <%                    Booking booking = (Booking) session.getAttribute("latestBooking");
 
                     if (booking != null) {
                 %>
@@ -54,7 +53,7 @@
                 </dl>
 
                 <%
-                    // Clear the booking from session after displaying
+
                     session.removeAttribute("latestBooking");
                 %>
                 <%
@@ -68,7 +67,7 @@
 
             <div class="text-center no-print">
                 <button class="btn btn-dark" onclick="printReceipt()">Print Receipt</button>
-                <a href="/booking.jsp" class="btn btn-secondary">Book Another</a>
+                <a href="booking.jsp" class="btn theme-btn">Book Another</a>
             </div>
         </div>
     </body>

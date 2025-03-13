@@ -39,7 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 13, 42, 0.7); 
+    background: rgba(0, 13, 42, 0.7);
 }
 
 /* Login Container */
@@ -340,4 +340,47 @@ button.btn {
 .driver-select option[selected]:not([value=""]) {
     background-color: var(--mainColor);
     color: var(--mainDarkblue);
+}
+
+
+
+/* Accordion Styling */
+.accordion-item {
+    background-color: var(--secondaryColor);
+    border: 1px solid var(--mainColor);
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.accordion-button {
+    background-color: var(--mainDarkblue);
+    color: var(--mainColor);
+    font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--fadeDarkBlue);
+    color: var(--mainColor);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--mainColor);
+}
+
+.accordion-button:hover {
+    background-color: var(--fadeDarkBlue);
+}
+
+.accordion-body {
+    background-color: var(--secondaryColor);
+    color: var(--mainDarkblue);
+}
+
+.driver-details {
+    color: var(--mainDarkblue);
+    font-size: 0.9em;
+}
+.no-driver {
+    font-style: italic;
 }
