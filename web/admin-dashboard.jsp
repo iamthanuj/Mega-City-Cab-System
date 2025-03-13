@@ -27,7 +27,7 @@
             <a href="admin-dashboard.jsp">Manage Bookings</a>
             <a href="manage-drivers.jsp">Manage Drivers</a>
             <a href="manage-users.jsp">Manage Users</a>
-            <a href="logout">Logout</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
         </div>
         <div class="content">
             <h2>Manage Bookings</h2>
@@ -43,18 +43,20 @@
                 // Display success or error messages
                 String message = request.getParameter("message");
                 String error = request.getParameter("error");
-                if ("driverAssigned".equals(message) || "statusUpdated".equals(message)) {
+                if ("driverAssigned".equals(message) || "statusUpdated".equals(message) || "bookingDeleted".equals(message)) {
             %>
             <div class="alert alert-success">
                 <% if ("driverAssigned".equals(message)) { %>Driver assigned successfully!<% } %>
                 <% if ("statusUpdated".equals(message)) { %>Status updated successfully!<% } %>
+                <% if ("bookingDeleted".equals(message)) { %>Booking deleted successfully!<% } %>
             </div>
             <%
-            } else if ("assignFailed".equals(error) || "updateFailed".equals(error)) {
+            } else if ("assignFailed".equals(error) || "updateFailed".equals(error) || "deleteFailed".equals(error)) {
             %>
             <div class="alert alert-danger">
                 <% if ("assignFailed".equals(error)) { %>Failed to assign driver.<% } %>
                 <% if ("updateFailed".equals(error)) { %>Failed to update status.<% } %>
+                <% if ("deleteFailed".equals(error)) { %>Failed to delete booking.<% } %>
             </div>
             <%
                 }
@@ -108,18 +110,22 @@
                         <td><%= booking.getDatetime()%></td>
                         <td><%= booking.getAddress()%></td>
                         <td>
-                            <form action="updateStatus" method="POST">
+                            <form action="updateStatus" method="POST" id="statusForm<%= booking.getBookingId()%>">
                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                <select name="status" class="status-select" onchange="this.form.submit()">
+                                <select name="status" class="status-select" onchange="this.form.setAttribute('data-changed', 'true');">
                                     <option value="Pending" <%= "Pending".equals(booking.getStatus()) ? "selected" : ""%>>Pending</option>
                                     <option value="Confirmed" <%= "Confirmed".equals(booking.getStatus()) ? "selected" : ""%>>Confirmed</option>
                                 </select>
+                                <button type="button" class="btn btn-primary btn-sm custom-btn-clr d-none" 
+                                        id="statusSubmit<%= booking.getBookingId()%>"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#statusModal<%= booking.getBookingId()%>">Update Status</button>
                             </form>
                         </td>
                         <td>
-                            <form action="assignDriver" method="POST">
+                            <form action="assignDriver" method="POST" id="driverForm<%= booking.getBookingId()%>">
                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                <select name="driverId" class="driver-select" onchange="this.form.submit()">
+                                <select name="driverId" class="driver-select" onchange="this.form.setAttribute('data-changed', 'true');">
                                     <option value="" <%= (booking.getDriverId() == null) ? "selected" : ""%>>Unassigned</option>
                                     <%
                                         for (Driver driver : allDrivers) {
@@ -130,27 +136,127 @@
                                         }
                                     %>
                                 </select>
+                                <button type="button" class="btn btn-primary btn-sm custom-btn-clr d-none" 
+                                        id="driverSubmit<%= booking.getBookingId()%>"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#driverModal<%= booking.getBookingId()%>">Assign Driver</button>
                             </form>
                         </td>
                         <td>
-                            <form action="deleteBooking" method="POST" style="display:inline;">
+                            <form action="deleteBooking" method="POST" id="deleteForm<%= booking.getBookingId()%>">
                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                <button type="submit" class="btn btn-danger btn-sm custom-btn-clr" onclick="return confirm('Are you sure?');">Delete</button>
+                                <button type="button" class="btn btn-sm custom-btn-clr" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteModal<%= booking.getBookingId()%>">Delete</button>
                             </form>
                         </td>
                     </tr>
-                    <%
-                        }
-                    } else {
-                    %>
-                    <tr>
-                        <td colspan="12" class="text-center">No bookings found.</td>
-                    </tr>
-                    <%
-                        }
-                    %>
+
+                    <!-- Update Status Confirmation Modal -->
+                <div class="modal fade" id="statusModal<%= booking.getBookingId()%>" tabindex="-1" 
+                     aria-labelledby="statusModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="statusModalLabel<%= booking.getBookingId()%>">Confirm Status Update</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to update the status of this booking?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary theme-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="statusForm<%= booking.getBookingId()%>" class="btn custom-btn-clr">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assign Driver Confirmation Modal -->
+                <div class="modal fade" id="driverModal<%= booking.getBookingId()%>" tabindex="-1" 
+                     aria-labelledby="driverModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="driverModalLabel<%= booking.getBookingId()%>">Confirm Driver Assignment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to assign this driver to the booking?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary theme-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="driverForm<%= booking.getBookingId()%>" class="btn custom-btn-clr">Assign</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Booking Confirmation Modal -->
+                <div class="modal fade" id="deleteModal<%= booking.getBookingId()%>" tabindex="-1" 
+                     aria-labelledby="deleteModalLabel<%= booking.getBookingId()%>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel<%= booking.getBookingId()%>">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this booking?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary theme-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="deleteForm<%= booking.getBookingId()%>" class="btn custom-btn-clr">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%
+                    }
+                } else {
+                %>
+                <tr>
+                    <td colspan="12" class="text-center">No bookings found.</td>
+                </tr>
+                <%
+                    }
+                %>
                 </tbody>
             </table>
         </div>
+
+        <!-- Logout Confirmation Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to log out?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary theme-btn" data-bs-dismiss="modal">Cancel</button>
+                        <form action="logout" method="get">
+                            <button type="submit" class="btn custom-btn-clr">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript to handle dropdown change detection -->
+        <script>
+            document.querySelectorAll('.status-select, .driver-select').forEach(select => {
+                select.addEventListener('change', function () {
+                    const form = this.closest('form');
+                    if (form.getAttribute('data-changed') === 'true') {
+                        const submitButton = form.querySelector('button[type="button"]');
+                        submitButton.click();
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

@@ -39,7 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 13, 42, 0.7); /* Dark blue overlay with 70% opacity */
+    background: rgba(0, 13, 42, 0.7); 
 }
 
 /* Login Container */
@@ -198,7 +198,7 @@ button.btn {
     border-color:var(--fadeDarkBlue) ;
 }
 
-/* Active Vehicle Type */
+
 .vehicle-option.selected {
     background-color: var(--mainDarkblue);
     color: #fff;
@@ -206,7 +206,6 @@ button.btn {
     ;
 }
 
-/* Vehicle Details Styling */
 .vehicle-details {
     border: 1px solid var(--mainDarkblue);
     padding: 15px;
@@ -284,6 +283,10 @@ button.btn {
 .content {
     margin-left: 270px;
     padding: 20px;
+    width: calc(100% - 270px);
+}
+.table {
+    width: 100%;
 }
 .status-select, .driver-select {
     border-radius: 10px;
@@ -297,7 +300,6 @@ button.btn {
     border-radius: 10px;
     max-width: 400px;
 }
-
 
 .alert {
     padding: 10px;
@@ -315,12 +317,12 @@ button.btn {
 }
 
 .driver-select option[value=""] {
-    color: #888; /* Gray for "Unassigned" */
+    color: #888;
 }
 .driver-select option:not([value=""]) {
-    color: var(--mainDarkblue); /* Dark blue for assigned drivers */
+    color: var(--mainDarkblue);
 }
 .driver-select option[selected]:not([value=""]) {
-    background-color: var(--mainColor); /* Highlight assigned driver */
+    background-color: var(--mainColor);
     color: var(--mainDarkblue);
 }

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import model.User;
 import util.DBConnection;
 
@@ -32,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
             pstmt.setString(6, user.getRole());
 
             int affectedRows = pstmt.executeUpdate();
-            
+
             return affectedRows > 0;
         }
     }
@@ -79,7 +81,62 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteUser(int userId) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "DELETE FROM users WHERE UserId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            int rowsDeleted = pstmt.executeUpdate();
+            return rowsDeleted > 0;
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                User user = new User(rs.getString("FullName"), rs.getString("NIC"), rs.getString("Email"), rs.getInt("Phone"), rs.getString("Password"));
+                user.setId(rs.getInt("UserId"));
+                user.setRole(rs.getString("Role"));
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public boolean updateUser(User user) throws SQLException {
+        String sql = "UPDATE users SET FullName = ?, NIC = ?, Email = ?, Phone = ?, Password = ?, Role = ? WHERE UserId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getNic());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setInt(4, user.getPhone());
+            pstmt.setString(5, user.getPassword());
+            pstmt.setString(6, user.getRole());
+            pstmt.setInt(7, user.getId());
+
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0;
+        }
+    }
+
+    @Override
+    public User getUserById(int userId) throws SQLException {
+        String sql = "SELECT * FROM users WHERE UserId = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(rs.getString("FullName"), rs.getString("NIC"), rs.getString("Email"),
+                            rs.getInt("Phone"), rs.getString("Password"));
+                    user.setId(rs.getInt("UserId"));
+                    user.setRole(rs.getString("Role"));
+                    return user;
+                }
+            }
+        }
+        return null;
     }
 
 }

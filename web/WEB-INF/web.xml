@@ -36,6 +36,18 @@
         <servlet-name>UpdateStatusServlet</servlet-name>
         <servlet-class>controller.UpdateStatusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <servlet-class>controller.UpdateUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>controller.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateDriverServlet</servlet-name>
+        <servlet-class>controller.UpdateDriverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -62,7 +74,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddDriverServlet</servlet-name>
-        <url-pattern>/AddDriverServlet</url-pattern>
+        <url-pattern>/addDriver</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AssignDriverServlet</servlet-name>
@@ -71,5 +83,17 @@
     <servlet-mapping>
         <servlet-name>UpdateStatusServlet</servlet-name>
         <url-pattern>/updateStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <url-pattern>/updateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateDriverServlet</servlet-name>
+        <url-pattern>/UpdateDriverServlet</url-pattern>
     </servlet-mapping>
 </web-app>

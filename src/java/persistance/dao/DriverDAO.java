@@ -18,4 +18,8 @@ public interface DriverDAO {
     boolean addDriver(Driver driver) throws SQLException;
 
     List<Driver> getAllDrivers() throws SQLException;
+
+    public boolean updateDriver(Driver driver) throws SQLException;
+
+    public boolean deleteDriver(int driverId) throws SQLException;
 }

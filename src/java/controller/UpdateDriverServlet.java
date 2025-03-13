@@ -10,38 +10,38 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 import persistance.dao.DriverDAO;
 import persistance.impl.DriverDAOImpl;
-import persistance.impl.UserDAOImpl;
 import service.model.Driver;
 
 /**
  *
  * @author Thanuja Fernando
  */
-public class AddDriverServlet extends HttpServlet {
+public class UpdateDriverServlet extends HttpServlet {
 
-    private DriverDAO driverDAO = new DriverDAOImpl();
+    private final DriverDAO driverDAO = new DriverDAOImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int driverId = Integer.parseInt(request.getParameter("driverId"));
         String name = request.getParameter("name");
-        String licenseNumber = request.getParameter("licenseNumber"); // Matches the form and Driver class
         int phone = Integer.parseInt(request.getParameter("phone"));
 
-        Driver driver = new Driver(name, licenseNumber, phone);
+        Driver driver = new Driver(name, name, phone);
+        driver.setId(driverId);
 
         try {
-            boolean success = driverDAO.addDriver(driver);
+            boolean success = driverDAO.updateDriver(driver);
             if (success) {
-                response.sendRedirect("manage-drivers.jsp?message=driverAdded");
+                response.sendRedirect("manage-drivers.jsp?message=driverUpdated");
             } else {
-                response.sendRedirect("manage-drivers.jsp?error=addFailed");
+                response.sendRedirect("manage-drivers.jsp?error=updateFailed");
             }
         } catch (SQLException e) {
-            throw new ServletException("Error adding driver: " + e.getMessage(), e);
+            throw new ServletException("Error updating driver: " + e.getMessage(), e);
         }
     }
+
 }
