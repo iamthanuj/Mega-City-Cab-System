@@ -55,116 +55,113 @@ public class UserDAOImplTest {
         }
     }
 
-    @Test
+   @Test
     public void testRegisterUser() throws SQLException {
-        User user = new User("John Doe", "123456789V", "john@example.com", 123456789, "password123");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Nimal Perera", "199512345678", "nimal@example.com", 711234567, "pass@123");
+        user.setRole(DEFAULT_ROLE);
         boolean result = userDAO.registerUser(user);
         assertTrue("User should be registered successfully", result);
+        System.out.println("testRegisterUser: Registration success = " + result);
 
-        // Verify user exists
-        boolean exists = userDAO.checkUserExists("john@example.com");
+        boolean exists = userDAO.checkUserExists("nimal@example.com");
         assertTrue("User should exist after registration", exists);
+        System.out.println("testRegisterUser: User exists = " + exists);
     }
 
     @Test
     public void testCheckUserExists() throws SQLException {
-        // Test with non-existing user
-        boolean result1 = userDAO.checkUserExists("nonexistent@example.com");
+        boolean result1 = userDAO.checkUserExists("kasun@example.com");
         assertFalse("Non-existent user should return false", result1);
+        System.out.println("testCheckUserExists: Non-existent user = " + result1);
 
-        // Add a user and test
-        User user = new User("Jane Doe", "987654321V", "jane@example.com", 987654321, "pass456");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Kasun Silva", "199823456789", "kasun@example.com", 722345655, "kasun123");
+        user.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user);
-        boolean result2 = userDAO.checkUserExists("jane@example.com");
+        boolean result2 = userDAO.checkUserExists("kasun@example.com");
         assertTrue("Existing user should return true", result2);
+        System.out.println("testCheckUserExists: Existing user = " + result2);
     }
 
     @Test
     public void testAuthenticateUser() throws SQLException {
-        // Add a test user
-        User user = new User("Test User", "111111111V", "test@example.com", 111111111, "secret");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Amal Fernando", "199012387654", "amal@example.com", 767596551, "amal@secret");
+        user.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user);
 
-        // Test successful authentication
-        User authUser = userDAO.authenticateUser("test@example.com", "secret");
+        User authUser = userDAO.authenticateUser("amal@example.com", "amal@secret");
         assertNotNull("Authentication should succeed with correct credentials", authUser);
-        assertEquals("Email should match", "test@example.com", authUser.getEmail());
+        assertEquals("Email should match", "amal@example.com", authUser.getEmail());
+        System.out.println("testAuthenticateUser: Successful auth email = " + authUser.getEmail());
 
-        // Test failed authentication
-        User failedAuth = userDAO.authenticateUser("test@example.com", "wrongpass");
+        User failedAuth = userDAO.authenticateUser("amal@example.com", "wrongpass");
         assertNull("Authentication should fail with wrong password", failedAuth);
+        System.out.println("testAuthenticateUser: Failed auth = " + (failedAuth == null ? "null" : "not null"));
     }
 
     @Test
     public void testDeleteUser() throws SQLException {
-        // Add a test user
-        User user = new User("Delete Me", "222222222V", "delete@example.com", 222222222, "deletepass");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Sanduni Wijesinghe", "199712309876", "sanduni@example.com", 0761230111, "sandu123");
+        user.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user);
-        User createdUser = userDAO.authenticateUser("delete@example.com", "deletepass");
+        User createdUser = userDAO.authenticateUser("sanduni@example.com", "sandu123");
 
-        // Delete and verify
         boolean result = userDAO.deleteUser(createdUser.getId());
         assertTrue("Delete should succeed", result);
+        System.out.println("testDeleteUser: Delete success = " + result);
 
-        // Verify user is gone
         User deletedUser = userDAO.getUserById(createdUser.getId());
         assertNull("User should not exist after deletion", deletedUser);
+        System.out.println("testDeleteUser: Deleted user = " + (deletedUser == null ? "null" : "not null"));
     }
 
-    @Test
+   @Test
     public void testGetAllUsers() throws SQLException {
-        // Add multiple users
-        User user1 = new User("User1", "333333333V", "user1@example.com", 333333333, "pass1");
+        User user1 = new User("Dilshan Rajapakse", "198912345678", "dilshan@example.com", 071123111, "dil123");
         user1.setRole(DEFAULT_ROLE);
-        User user2 = new User("User2", "444444444V", "user2@example.com", 444444444, "pass2");
+        User user2 = new User("Tharindu Gunawardena", "199423456789", "tharindu@example.com", 0722341111, "thar456");
         user2.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user1);
         userDAO.registerUser(user2);
 
         List<User> users = userDAO.getAllUsers();
         assertEquals("Should return 2 users", 2, users.size());
+        System.out.println("testGetAllUsers: Number of users = " + users.size());
     }
 
     @Test
     public void testUpdateUser() throws SQLException {
-        // Add a test user
-        User user = new User("Old Name", "555555555V", "old@example.com", 555555555, "oldpass");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Chamari Athukorala", "199312398765", "chamari@example.com", 771231111, "cham123");
+        user.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user);
-        User createdUser = userDAO.authenticateUser("old@example.com", "oldpass");
+        User createdUser = userDAO.authenticateUser("chamari@example.com", "cham123");
 
-        // Update user
-        createdUser.setName("New Name");
-        createdUser.setPhone(999999999);
-        createdUser.setRole(DEFAULT_ROLE);  // Ensure role remains set
+        createdUser.setName("Chamari Perera");
+        createdUser.setPhone(781231111);
+        createdUser.setRole(DEFAULT_ROLE);
         boolean result = userDAO.updateUser(createdUser);
         assertTrue("Update should succeed", result);
+        System.out.println("testUpdateUser: Update success = " + result);
 
-        // Verify update
         User updatedUser = userDAO.getUserById(createdUser.getId());
-        assertEquals("Name should be updated", "New Name", updatedUser.getName());
-        assertEquals("Phone should be updated", 999999999, updatedUser.getPhone());
+        assertEquals("Name should be updated", "Chamari Perera", updatedUser.getName());
+        assertEquals("Phone should be updated", 781231111, updatedUser.getPhone());
+        System.out.println("testUpdateUser: Updated name = " + updatedUser.getName() + ", phone = " + updatedUser.getPhone());
     }
 
     @Test
     public void testGetUserById() throws SQLException {
-        // Add a test user
-        User user = new User("Get Me", "666666666V", "get@example.com", 666666666, "getpass");
-        user.setRole(DEFAULT_ROLE);  // Set role
+        User user = new User("Saman Kumara", "198512376543", "saman@example.com", 071123111, "saman789");
+        user.setRole(DEFAULT_ROLE);
         userDAO.registerUser(user);
-        User createdUser = userDAO.authenticateUser("get@example.com", "getpass");
+        User createdUser = userDAO.authenticateUser("saman@example.com", "saman789");
 
-        // Get and verify
         User foundUser = userDAO.getUserById(createdUser.getId());
         assertNotNull("User should be found", foundUser);
-        assertEquals("Email should match", "get@example.com", foundUser.getEmail());
+        assertEquals("Email should match", "saman@example.com", foundUser.getEmail());
+        System.out.println("testGetUserById: Found user email = " + foundUser.getEmail());
 
-        // Test non-existent user
         User notFoundUser = userDAO.getUserById(999);
         assertNull("Non-existent user should return null", notFoundUser);
+        System.out.println("testGetUserById: Non-existent user = " + (notFoundUser == null ? "null" : "not null"));
     }
 }
