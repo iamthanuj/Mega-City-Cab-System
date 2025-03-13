@@ -18,19 +18,19 @@
             <h2>Register</h2>
             <form action="register" method="post">
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="name"  placeholder="Full Name" required>
+                    <input type="text" class="form-control dark-inputs" name="name"  placeholder="Full Name" required>
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="nic"  placeholder="NIC" required>
+                    <input type="text" class="form-control dark-inputs" name="nic"  placeholder="NIC" required>
                 </div>
                 <div class="mb-3">
-                    <input type="email" class="form-control" name="email"  placeholder="Email" required>
+                    <input type="email" class="form-control dark-inputs" name="email"  placeholder="Email" required>
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="phone"  placeholder="Phone" required>
+                    <input type="text" class="form-control dark-inputs" name="phone"  placeholder="Phone" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <input type="password" class="form-control dark-inputs" name="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn btn-custom">Register</button>
 

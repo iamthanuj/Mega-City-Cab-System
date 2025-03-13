@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import model.User;
 import persistance.impl.BookingDAOImpl;
-import service.factory.VehicleFactory;
 import service.model.Booking;
 
 /**
@@ -28,6 +27,7 @@ public class UpdateBookingServlet extends HttpServlet {
             throws ServletException, IOException {
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));

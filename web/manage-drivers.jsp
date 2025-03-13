@@ -72,16 +72,16 @@
             <form action="addDriver" method="POST" class="mb-4">
                 <div class="row">
                     <div class="col-md-3">
-                        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+                        <input type="text" name="name" class="form-control white-inputs" placeholder="Full Name" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="licenseNumber" class="form-control" placeholder="License Number" required>
+                        <input type="text" name="licenseNumber" class="form-control white-inputs" placeholder="License Number" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="phone" class="form-control" placeholder="Phone" required>
+                        <input type="text" name="phone" class="form-control white-inputs" placeholder="Phone" required>
                     </div>
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary custom-btn-clr mt-2">Add Driver</button>
+                        <button type="submit" class="btn custom-btn-clr mt-2">Add Driver</button>
                     </div>
                 </div>
             </form>
@@ -121,9 +121,9 @@
                     <td><input type="text" name="phone" value="<%= driver.getPhone()%>" required></td>
                     <td>
                         <input type="hidden" name="driverId" value="<%= driver.getId()%>">
-                        <button type="button" class="btn btn-primary btn-sm custom-btn-clr" 
+                        <button type="button" class="btn btn-sm custom-btn-clr" 
                                 data-bs-toggle="modal" data-bs-target="#updateModal<%= driver.getId()%>">Update</button>
-                        <button type="button" class="btn btn-danger btn-sm custom-btn-clr" 
+                        <button type="button" class="btn btn-sm  theme-btn" 
                                 data-bs-toggle="modal" data-bs-target="#deleteModal<%= driver.getId()%>">Delete</button>
                     </td>
                 </form>

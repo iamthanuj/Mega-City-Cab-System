@@ -22,10 +22,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean registerUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (FullName, NIC,Email,Phone,Password,Role) VALUES (?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO users (FullName, NIC, Email, Phone, Password, Role) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getNic());
             pstmt.setString(3, user.getEmail());
@@ -34,7 +32,6 @@ public class UserDAOImpl implements UserDAO {
             pstmt.setString(6, user.getRole());
 
             int affectedRows = pstmt.executeUpdate();
-
             return affectedRows > 0;
         }
     }

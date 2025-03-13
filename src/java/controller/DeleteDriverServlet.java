@@ -12,34 +12,38 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import persistance.dao.DriverDAO;
 import persistance.impl.DriverDAOImpl;
-import service.model.Driver;
 
 /**
  *
  * @author Thanuja Fernando
  */
-public class AddDriverServlet extends HttpServlet {
+public class DeleteDriverServlet extends HttpServlet {
 
-    private DriverDAO driverDAO = new DriverDAOImpl();
+    private final DriverDAO driverDAO = new DriverDAOImpl();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String licenseNumber = request.getParameter("licenseNumber"); // Matches the form and Driver class
-        int phone = Integer.parseInt(request.getParameter("phone"));
 
-        Driver driver = new Driver(name, licenseNumber, phone);
+        int driverId;
+        try {
+            driverId = Integer.parseInt(request.getParameter("driverId"));
+        } catch (NumberFormatException e) {
+            response.sendRedirect("manage-drivers.jsp?error=invalidDriverId");
+            return;
+        }
 
         try {
-            boolean success = driverDAO.addDriver(driver);
+
+            boolean success = driverDAO.deleteDriver(driverId);
             if (success) {
-                response.sendRedirect("manage-drivers.jsp?message=driverAdded");
+                response.sendRedirect("manage-drivers.jsp?message=driverDeleted");
             } else {
-                response.sendRedirect("manage-drivers.jsp?error=addFailed");
+                response.sendRedirect("manage-drivers.jsp?error=deleteFailed");
             }
         } catch (SQLException e) {
-            throw new ServletException("Error adding driver: " + e.getMessage(), e);
+            throw new ServletException("Error deleting driver: " + e.getMessage(), e);
         }
     }
+
 }

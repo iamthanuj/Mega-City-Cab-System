@@ -48,6 +48,10 @@
         <servlet-name>UpdateDriverServlet</servlet-name>
         <servlet-class>controller.UpdateDriverServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteDriverServlet</servlet-name>
+        <servlet-class>controller.DeleteDriverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -94,6 +98,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateDriverServlet</servlet-name>
-        <url-pattern>/UpdateDriverServlet</url-pattern>
+        <url-pattern>/updateDriver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteDriverServlet</servlet-name>
+        <url-pattern>/deleteDriver</url-pattern>
     </servlet-mapping>
 </web-app>

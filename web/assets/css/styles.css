@@ -78,6 +78,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 
+.dark-inputs::placeholder{
+    color: white;
+}
+
+
+.white-inputs{
+    color: black;
+}
+
+.white-inputs::placeholder{
+    color: black;
+}
+
+
+
 .btn-custom {
     background-color: #A0FF70;
     color: #000D2A;

@@ -29,38 +29,51 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Retrieve form parameters
         String name = request.getParameter("name");
         String nic = request.getParameter("nic");
         String email = request.getParameter("email");
-        int phone = Integer.parseInt(request.getParameter("phone"));
+        int phone;
+        try {
+            phone = Integer.parseInt(request.getParameter("phone"));
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid phone number format!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
         String password = request.getParameter("password");
 
-        User newUser = new User(name, nic, email, phone, password);
-
-        try {
-//            if (userService.checkUserExists(email)) {
-//                request.setAttribute("errorMessage", "Email already registered!");
-//                request.getRequestDispatcher("register.jsp").forward(request, response);
-//            } else {
-//                if (userService.registerUser(newUser)) {
-//                    request.setAttribute("successMessage", "Registration successful! Please log in.");
-//                    request.getRequestDispatcher("login.jsp").forward(request, response);
-//                } else {
-//                    request.setAttribute("errorMessage","Registration failed. Try again.");
-//                    request.getRequestDispatcher("register.jsp").forward(request, response);
-//                }
-//            }
-            if (userService.registerUser(newUser)) {
-                request.setAttribute("successMessage", "Registration successful! Please log in.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
-                request.setAttribute("errorMessage", "Email already registered!");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Validate inputs
+        if (name == null || name.trim().isEmpty() || nic == null || nic.trim().isEmpty()
+                || email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "All fields are required!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
         }
 
+        // Create new user and set default role
+        User newUser = new User(name, nic, email, phone, password);
+        newUser.setRole("user"); // Set default role for new users
+
+        try {
+            // Check if email already exists
+            if (userService.checkUserExists(email)) {
+                request.setAttribute("errorMessage", "Email already registered!");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+            } else {
+                // Attempt to register the user
+                if (userService.registerUser(newUser)) {
+                    request.setAttribute("successMessage", "Registration successful! Please log in.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("errorMessage", "Registration failed. Please try again.");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                }
+            }
+        } catch (SQLException e) {
+            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        }
     }
 
     @Override

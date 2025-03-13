@@ -7,6 +7,7 @@ package persistance.impl;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class DriverDAOImpl implements DriverDAO {
     @Override
     public boolean addDriver(Driver driver) throws SQLException {
         String sql = "INSERT INTO drivers (Name, LicenseNumber, Phone) VALUES (?, ?, ?)";
-        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+
             pstmt.setString(1, driver.getName());
             pstmt.setString(2, driver.getLicenseNumber()); // Matches the Driver class field
             pstmt.setInt(3, driver.getPhone());
@@ -73,8 +75,7 @@ public class DriverDAOImpl implements DriverDAO {
     @Override
     public boolean deleteDriver(int driverId) throws SQLException {
         String sql = "DELETE FROM drivers WHERE DriverId = ?";
-        try (Connection conn = DBConnection.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getInstance().getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, driverId);
             int rowsDeleted = pstmt.executeUpdate();
             return rowsDeleted > 0;
