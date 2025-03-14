@@ -53,7 +53,7 @@ public class BookingDAOImplTest {
         userDAO = new UserDAOImpl();
         conn = DBConnection.getInstance().getConnection();
 
-        // Clean the tables before each test
+       
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM bookings");
             stmt.execute("ALTER TABLE bookings AUTO_INCREMENT = 1");
@@ -118,7 +118,7 @@ public class BookingDAOImplTest {
     @Test
     public void testGetAllBookingsForUser() throws SQLException {
         Vehicle vehicle = VehicleFactory.getVehicle(DEFAULT_VEHICLE_TYPE);
-        // Add multiple bookings for test user
+        
         Booking booking1 = new Booking(testUserId, vehicle, 20.0, 2000.0,
                 "Galle", "Hikkaduwa", LocalDateTime.now(), "50 Matara Road, Galle");
         Booking booking2 = new Booking(testUserId, vehicle, 30.0, 3000.0,
@@ -175,7 +175,6 @@ public class BookingDAOImplTest {
                 "Battaramulla", "Rajagiriya", LocalDateTime.now(), "75 Nawala Road, Battaramulla");
         bookingDAO.addBooking(originalBooking);
 
-        // Create a test driver with Sri Lankan data
         int testDriverId;
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("INSERT INTO drivers (Name, LicenseNumber, Phone) VALUES ('Kamal Silva', 'B1234567', '94771234567')");
@@ -183,19 +182,15 @@ public class BookingDAOImplTest {
             rs.next();
             testDriverId = rs.getInt(1);
         }
-
-        // Create updated booking with same ID and user ID
         Booking updatedBooking = new Booking(testUserId, vehicle, 70.0, 7000.0,
                 "Dehiwala", "Mount Lavinia", LocalDateTime.now().plusHours(1), "85 Galle Road, Dehiwala");
         updatedBooking.setBookingId(originalBooking.getBookingId());
         updatedBooking.setStatus("Confirmed");
-        updatedBooking.setDriverId(testDriverId); // Use the valid test driver ID
+        updatedBooking.setDriverId(testDriverId);
 
         boolean result = bookingDAO.updateBooking(updatedBooking);
         assertTrue("Update should succeed", result);
         System.out.println("testUpdateBooking: Booking with ID " + updatedBooking.getBookingId() + " updated successfully");
-
-        // Verify update
         Booking retrieved = bookingDAO.getBookingById(originalBooking.getBookingId());
         assertEquals("Distance should be updated", 70.0, retrieved.getDistance(), 0.001);
         assertEquals("Start location should be updated", "Dehiwala", retrieved.getStartLocation());
@@ -205,8 +200,6 @@ public class BookingDAOImplTest {
                 ", Start Location: " + retrieved.getStartLocation() +
                 ", Status: " + retrieved.getStatus() +
                 ", Driver ID: " + retrieved.getDriverId());
-
-        // Clean up: First remove the booking, then the driver
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("DELETE FROM bookings WHERE BookingId = " + originalBooking.getBookingId());
             stmt.execute("DELETE FROM drivers WHERE DriverId = " + testDriverId);

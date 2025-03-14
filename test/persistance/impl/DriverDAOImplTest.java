@@ -107,7 +107,7 @@ public class DriverDAOImplTest {
         Driver driver = new Driver("Ranil Jayawardena", "B3456789", 776667777);
         driverDAO.addDriver(driver);
 
-        // Update driver details
+    
         driver.setName("Ranil Perera");
         driver.setLicenseNumber("B9876543");
         driver.setPhone(778889999);
@@ -115,7 +115,7 @@ public class DriverDAOImplTest {
         assertTrue("Update should succeed", result);
         System.out.println("testUpdateDriver: Driver with ID " + driver.getId() + " updated successfully");
 
-        // Verify update
+       
         Driver updated = driverDAO.getDriverById(driver.getId());
         assertEquals("Name should be updated", "Ranil Perera", updated.getName());
         assertEquals("LicenseNumber should be updated", "B9876543", updated.getLicenseNumber());

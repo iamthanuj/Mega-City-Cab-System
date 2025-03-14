@@ -157,3 +157,4 @@ function printBill(bookingId) {
     printWindow.document.close();
     printWindow.print();
 }
+
